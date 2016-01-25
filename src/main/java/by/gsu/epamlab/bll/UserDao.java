@@ -102,4 +102,17 @@ public class UserDao implements IUserDao{
         }
 
     }
+
+    @Override
+    public void closeConnection() {
+        if(this.connection!=null)
+        {
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 }

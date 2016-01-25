@@ -33,6 +33,12 @@ public class Constants {
     public final static int TWO=2;
     public final static int THREE=3;
 
+    //error message
+    public final static String USER_ALREADY_IS="User with that name already is";
+    public final static String PASSWORD_NOT_CORRECT="Not correct password, pls. reinput it";
+    public final static String SOME_PROBLEM= "Some problem pls. try again";
+
+
 
 
 }

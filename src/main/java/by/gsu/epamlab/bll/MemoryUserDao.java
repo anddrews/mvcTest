@@ -59,6 +59,8 @@ public class MemoryUserDao implements IUserDao {
         return users.containsKey(login);
     }
 
-
-
+    @Override
+    public void closeConnection() {
+        //not need close, because in memory
+    }
 }

@@ -9,4 +9,5 @@ public interface IUserDao {
     User getUser(String login, String passw) throws DAOException;
     boolean createUser(String login, String passw, Roles role) throws DAOException;
     boolean isUser(String login) throws DAOException;
+    void closeConnection();
 }

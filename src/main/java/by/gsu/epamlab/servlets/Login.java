@@ -25,8 +25,9 @@ public class Login extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login=req.getParameter(Constants.USER).trim();
         String password=req.getParameter(Constants.PASSWORD).trim();
+        IUserDao dao=null;
         try{
-            IUserDao dao=FabricDAO.getDAO();
+             dao=FabricDAO.getDAO();
             if(!login.equals("") && !password.equals("") && dao.isUser(login))
             {
                 User user= dao.getUser(login, password);
@@ -42,6 +43,12 @@ public class Login extends HttpServlet{
         catch (DAOException e)
         {
             req.getRequestDispatcher(Constants.ERROR_JSP).forward(req, resp);
+        }
+        finally {
+            if(dao!=null)
+            {
+                dao.closeConnection();
+            }
         }
 
 
