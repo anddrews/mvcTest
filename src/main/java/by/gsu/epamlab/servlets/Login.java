@@ -1,8 +1,8 @@
 package by.gsu.epamlab.servlets;
 
 import by.gsu.epamlab.constants.Constants;
-import by.gsu.epamlab.bll.FabricDAO;
-import by.gsu.epamlab.bll.IUserDao;
+import by.gsu.epamlab.fabrics.FabricDAO;
+import by.gsu.epamlab.interfaces.IUserDao;
 import by.gsu.epamlab.exception.DAOException;
 import by.gsu.epamlab.model.User;
 
@@ -15,9 +15,11 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class Login extends HttpServlet{
+    String path;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         req.getRequestDispatcher(Constants.LOGIN_JSP).forward(req, resp);
     }
 
@@ -31,11 +33,14 @@ public class Login extends HttpServlet{
             if(!login.equals("") && !password.equals("") && dao.isUser(login))
             {
                 User user= dao.getUser(login, password);
-                req.getSession().setAttribute(Constants.USER,user);
+                System.out.println(user);
+
+                req.getSession().setAttribute(Constants.USER, user);
                 resp.sendRedirect(Constants.HOME_PAGE);
             }
             else
             {
+
                 req.setAttribute(Constants.ERROR,Constants.BAD_PARAMETER);
                 doGet(req, resp);
             }

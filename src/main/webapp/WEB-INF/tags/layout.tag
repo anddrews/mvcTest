@@ -1,6 +1,8 @@
 <%@ tag import="by.gsu.epamlab.constants.Constants" %>
 <%@tag description="Overall Page template" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="t" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,22 +29,29 @@
             <form name="for" action="logout" method="post">
                 <a href="JavaScript:document.for.submit()">Logout</a>
             </form>
-
-
         </c:otherwise>
     </c:choose>
 
 </div>
 <div class="wrapper">
 <c:if test="${not empty user}">
-    <p>Name:${user.userName}</p>
-    <jsp:doBody/>
+
+    <t:if test="${user.role eq 'ADMIN'}">
+        <form name="buttons" action="layoutAction" method="post">
+            <input type="submit" value="Upload Repertoire">
+        </form>
+    </t:if>
+    <t:if test="${user.role eq 'USER'}">
+        <form name="buttons" action="layoutAction" method="post">
+            <input type="submit" value="Booking places">
+        </form>
+    </t:if>
+
 </c:if>
-
-
+    <jsp:doBody/>
 </div>
 <footer>
-    <p> Develop by Kondratenko e-mail:anddrews@tut.by</p>
+    <p> Developed by Kondratenko e-mail:anddrews@tut.by</p>
 </footer>
 
 

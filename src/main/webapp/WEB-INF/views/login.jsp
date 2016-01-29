@@ -10,7 +10,7 @@
   <p>User</p>
   <input name="user" type="text">
   <p>Password</p>
-  <input name="password" type="text">
+  <input name="password" type="password">
   <input type="submit">
 </form>
 

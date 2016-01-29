@@ -1,4 +1,4 @@
-package by.gsu.epamlab.bll;
+package by.gsu.epamlab.interfaces;
 
 
 import by.gsu.epamlab.constants.Roles;

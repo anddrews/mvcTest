@@ -3,8 +3,8 @@ package by.gsu.epamlab.servlets;
 
 import by.gsu.epamlab.constants.Constants;
 import by.gsu.epamlab.constants.Roles;
-import by.gsu.epamlab.bll.FabricDAO;
-import by.gsu.epamlab.bll.IUserDao;
+import by.gsu.epamlab.fabrics.FabricDAO;
+import by.gsu.epamlab.interfaces.IUserDao;
 import by.gsu.epamlab.exception.DAOException;
 
 import javax.servlet.ServletException;

@@ -1,6 +1,7 @@
 package by.gsu.epamlab.bll;
 
 import by.gsu.epamlab.constants.Roles;
+import by.gsu.epamlab.interfaces.IUserDao;
 import by.gsu.epamlab.model.User;
 import by.gsu.epamlab.model.UserInMemory;
 

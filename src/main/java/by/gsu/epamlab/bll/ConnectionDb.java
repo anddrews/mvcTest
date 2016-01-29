@@ -12,30 +12,11 @@ import java.util.ResourceBundle;
 public class ConnectionDb
 {
     private static ConnectionDb connectionDb;
-    private static String dbUrl;
-    private static String user;
-    private static String password;
-    private static String driver;
-    private static String DB_URL="dbUrl";
-    private static String PASSWORD="password";
-    private static String USER="user";
-    private static String DRIVER="driver";
-
 
     private ConnectionDb() throws DAOException {
-        ResourceBundle resourcesBundle=ResourceBundle.getBundle(Constants.PROPERTIES_PATH);
-        Enumeration<String> resourcesKey=resourcesBundle.getKeys();
-        while (resourcesKey.hasMoreElements())
-        {
-            String key=resourcesKey.nextElement();
-            if (key.compareTo(DB_URL)==0){dbUrl=resourcesBundle.getString(key).trim();}
-            if (key.compareTo(PASSWORD)==0){password=resourcesBundle.getString(key).trim();}
-            if (key.compareTo(USER)==0){user=resourcesBundle.getString(key).trim();}
-            if (key.compareTo(DRIVER)==0){driver=resourcesBundle.getString(key).trim();}
-        }
 
         try {
-            Class.forName(driver);
+            Class.forName(ReadProperties.get(Constants.DRIVER));
         } catch (ClassNotFoundException e) {
             throw new DAOException(e.getMessage());
         }
@@ -48,7 +29,10 @@ public class ConnectionDb
             connectionDb=new ConnectionDb();
         }
         try {
-           return DriverManager.getConnection(dbUrl,user,password);
+           return DriverManager.getConnection(
+                   ReadProperties.get(Constants.DB_URL),
+                   ReadProperties.get(Constants.USER),
+                   ReadProperties.get(Constants.PASSWORD));
         } catch (SQLException e) {
             throw new DAOException(e.getMessage());
         }

@@ -3,7 +3,7 @@ package by.gsu.epamlab.constants;
 
 public enum Roles {
 
-    ADMIN(1),USER(2),GUEST(3);
+    ADMIN(0),USER(1),GUEST(2);
 
     private int role;
 

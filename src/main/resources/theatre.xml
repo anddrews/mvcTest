@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<theatre>
+    <zale>
+        <row number="1">
+            <place startNumber="1" stopNumber="10" category="1"/>
+            <place startNumber="11" stopNumber="20" category="2"/>
+            <place startNumber="21" stopNumber="30" category="1"/>
+        </row>
+        <row number="2">
+            <place startNumber="1" stopNumber="10" category="1"/>
+            <place startNumber="11" stopNumber="20" category="2"/>
+            <place startNumber="21" stopNumber="30" category="1"/>
+        </row>
+        <row number="2">
+            <place startNumber="1" stopNumber="10" category="1"/>
+            <place startNumber="11" stopNumber="20" category="2"/>
+            <place startNumber="21" stopNumber="30" category="1"/>
+        </row>
+    </zale>
+    <category name="1" cost="100" />
+    <category name="2" cost="200" />
+    <category name="3" cost="300" />
+</theatre>
+
+
+

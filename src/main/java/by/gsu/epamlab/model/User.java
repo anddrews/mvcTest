@@ -21,7 +21,10 @@ public class User implements Comparable<User>{
         return role.toString();
     }
 
-
+    @Override
+    public String toString() {
+        return this.userName+ " "+ getRole();
+    }
 
     @Override
     public int compareTo(User o) {

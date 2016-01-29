@@ -5,7 +5,7 @@ public class Constants {
 
     //Properties file path
 
-    public final static String PROPERTIES_PATH ="connectDB";
+    public final static String PROPERTIES_PATH ="property";
 
     //path to jsp page
 
@@ -13,12 +13,14 @@ public class Constants {
     public final static String LOGIN_JSP = "/WEB-INF/views/login.jsp";
     public final static String CREATE_JSP = "/WEB-INF/views/createUser.jsp";
     public final static String ERROR_JSP = "/WEB-INF/views/errorPage.jsp";
+    public final static String ABOUT_JSP = "/WEB-INF/views/about.jsp";
 
     //url for jump
 
     public final static String LOGIN_PAGE="/mvcTest/login";
     public final static String CREATE_USER_PAGE="/mvcTest/login/create";
     public final static String HOME_PAGE="/mvcTest/";
+    //public final static String ABOUT_PAGE="/mvcTest/about?date=${date}&name=${performance.name}";
 
     // String constants
 
@@ -29,6 +31,17 @@ public class Constants {
     public final static String ERROR="error";
     public final static String BAD_PARAMETER="Bad parameter";
     public final static String NOTHING="";
+    public final static String PERFORMANS_DATE_FORMAT="DD.MM";
+    public final static String PERFORMANS_TIME_FORMAT="HH:mm";
+    public final static String DB_URL="dbUrl";
+    public final static String DRIVER="driver";
+    public final static String REPERTOIRE_FILE_NAME ="repertoireFileName";
+    public final static String REPERTOIRE ="repertoire";
+    public final static String SEPARATOR =";";
+
+    //number constants
+
+    public final static int ZERO=0;
     public final static int ONE=1;
     public final static int TWO=2;
     public final static int THREE=3;

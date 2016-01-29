@@ -4,6 +4,7 @@ package by.gsu.epamlab.bll;
 import by.gsu.epamlab.constants.Constants;
 import by.gsu.epamlab.constants.Roles;
 import by.gsu.epamlab.exception.DAOException;
+import by.gsu.epamlab.interfaces.IUserDao;
 import by.gsu.epamlab.model.User;
 
 import java.sql.Connection;
@@ -11,11 +12,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserDao implements IUserDao{
+public class UserDao implements IUserDao {
 
     private final static Object lock=new Object();
 
     private static final String GET_USER="SELECT * FROM users WHERE user=?";
+    private static final String CHECK_USER="SELECT * FROM users WHERE user=? AND password=?";
     private static final String CREATE_USER="INSERT INTO users(user,password,role) VALUES (?,?,?) ";
     private Connection connection;
 
@@ -30,21 +32,17 @@ public class UserDao implements IUserDao{
         ResultSet resultSet;
 
 
-        try(PreparedStatement preparedStatement=connection.prepareStatement(GET_USER)) {
+        try(PreparedStatement preparedStatement=connection.prepareStatement(CHECK_USER)) {
 
-            preparedStatement.setString(1,login);
+            preparedStatement.setString(Constants.ONE,login);
+            preparedStatement.setString(Constants.TWO,passw);
 
             resultSet=preparedStatement.executeQuery();
             if(resultSet.next())
             {
                 String name=resultSet.getString(Constants.USER);
-                String password=resultSet.getString(Constants.PASSWORD);
                 int role=resultSet.getInt(Constants.ROLE);
-
-                if(passw.equals(password))
-                {
-                    result= new User(name,Roles.values()[role]);
-                }
+                result= new User(name,Roles.values()[role]);
             }
             return result;
 
