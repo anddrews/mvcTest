@@ -46,9 +46,6 @@
     </dependency>
 
 
-
-
-
   </dependencies>
   <build>
     <finalName>epam</finalName>

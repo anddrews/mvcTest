@@ -4,7 +4,7 @@ package by.gsu.epamlab.bll;
 import by.gsu.epamlab.constants.Constants;
 import by.gsu.epamlab.exception.ReadFileException;
 import by.gsu.epamlab.interfaces.IRepertoire;
-import by.gsu.epamlab.model.Performance;
+import by.gsu.epamlab.model.Play;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,12 +19,12 @@ import java.util.TimeZone;
 public class RepertoireInCsv implements IRepertoire {
 
 
-    public  List<Performance> getRepertoire() throws ReadFileException {
+    public  List<Play> getRepertoire() throws ReadFileException {
 
         try(BufferedReader bufferedReader=
                     new BufferedReader(new FileReader( ReadProperties.get(Constants.REPERTOIRE_FILE_NAME))))
         {
-            List<Performance> repertoire=new ArrayList<>();
+            List<Play> repertoire=new ArrayList<>();
             String stringRead;
             int id=0;
             while ((stringRead=bufferedReader.readLine())!=null)
@@ -35,7 +35,7 @@ public class RepertoireInCsv implements IRepertoire {
                 {
                     description.append(stringRead);
                 }
-                Performance performance=new Performance(id,name,description.toString());
+                Play play =new Play(id,name,description.toString());
                 while ((stringRead=bufferedReader.readLine())!=null && !stringRead.equals("") )
                 {
                     String[] rows=stringRead.split(Constants.SEPARATOR);
@@ -44,9 +44,9 @@ public class RepertoireInCsv implements IRepertoire {
                     SimpleDateFormat dateFormat=new SimpleDateFormat();
                     dateFormat.setTimeZone(TimeZone.getDefault());
                     Date dateToSave=dateFormat.parse(date + " "+ hour);
-                    performance.setNewDate(dateToSave);
+                    play.setNewDate(dateToSave);
                 }
-                repertoire.add(performance);
+                repertoire.add(play);
                 id++;
             }
 
@@ -59,15 +59,15 @@ public class RepertoireInCsv implements IRepertoire {
     }
 
     @Override
-    public Performance getPerfomance(int id) throws ReadFileException {
+    public Play getPlay(int id) throws ReadFileException {
 
-        List<Performance> performances=getRepertoire();
-        for (Performance tmp:performances)
+        List<Play> plays =getRepertoire();
+        for (Play tmp: plays)
         {
             if(tmp.getId()==id){
                 return tmp;
             }
         }
-        return new Performance(0,"Not list repertoire","kgdskgdskljgsdflkgjsdkflj");
+        return new Play(0,"Not list repertoire","kgdskgdskljgsdflkgjsdkflj");
     }
 }

@@ -2,12 +2,12 @@ package by.gsu.epamlab.interfaces;
 
 
 import by.gsu.epamlab.exception.ReadFileException;
-import by.gsu.epamlab.model.Performance;
+import by.gsu.epamlab.model.Play;
 
 import java.util.List;
 
 public interface IRepertoire {
 
-    List<Performance> getRepertoire() throws ReadFileException;
-    Performance getPerfomance(int id) throws ReadFileException;
+    List<Play> getRepertoire() throws ReadFileException;
+    Play getPlay(int id) throws ReadFileException;
 }

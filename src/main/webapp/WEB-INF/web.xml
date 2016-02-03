@@ -5,4 +5,8 @@
  http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
 
   <display-name>mvcTest</display-name>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
 </web-app>

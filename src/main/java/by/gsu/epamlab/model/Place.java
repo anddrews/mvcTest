@@ -3,30 +3,39 @@ package by.gsu.epamlab.model;
 
 public class Place {
 
-    private int place;
-    private int row;
-    private boolean isFree;
+    private int price;
+    private int status;
 
-    public Place(int row, int place, boolean isFree) {
-        this.place = place;
-        this.row = row;
-        this.isFree = isFree;
+    public Place(int price) {
+        this.price = price;
+        this.status = 0;
     }
 
-    public int getPlace() {
-        return place;
+    public int getPrice() {
+        return price;
     }
 
-    public int getRow() {
-        return row;
+    public int getStatus() {
+        return status;
     }
 
-    public boolean getIsFree() {
-        return isFree;
+    public void setBooking() {
+        if(this.status!=-1)this.status = Math.abs(this.status-1);
     }
-
-    public void setBooking()
+    public void setSold()
     {
-        this.isFree=!this.isFree;
+        this.status=-1;
+    }
+    public void setFree()
+    {
+        if(this.status!=-1) this.status=0;
+    }
+
+    @Override
+    public String toString() {
+        return "price=" + price +
+                ", status=" + status;
+
     }
 }
+

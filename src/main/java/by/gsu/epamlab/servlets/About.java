@@ -1,11 +1,12 @@
 package by.gsu.epamlab.servlets;
 
-import by.gsu.epamlab.bll.RepertoireInCsv;
 import by.gsu.epamlab.constants.Constants;
+import by.gsu.epamlab.bll.ZalePlane;
 import by.gsu.epamlab.exception.ReadFileException;
+import by.gsu.epamlab.fabrics.FabricRepertoire;
 import by.gsu.epamlab.interfaces.IRepertoire;
-import by.gsu.epamlab.model.Performance;
-import by.gsu.epamlab.model.ZaleModel;
+import by.gsu.epamlab.model.Play;
+import by.gsu.epamlab.model.Zale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,15 +22,18 @@ public class About extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 
-        IRepertoire repertoire=new RepertoireInCsv();
+        IRepertoire repertoire= FabricRepertoire.getRepertoire();
 
 
         try {
             if(req.getQueryString()!=null) {
                 int id = Integer.valueOf(req.getParameter("id"));
-                Performance performance=repertoire.getPerfomance(id);
-                req.getSession().setAttribute("performance",performance);
+                Play play =repertoire.getPlay(id);
+                req.setAttribute("performance", play);
+                req.setAttribute("date",req.getParameter("data"));
             }
+
+            //req.setAttribute("zale", (new Zale()).getZale());
             req.getRequestDispatcher(Constants.ABOUT_JSP).forward(req, resp);
         } catch (  ReadFileException e) {
             e.printStackTrace();

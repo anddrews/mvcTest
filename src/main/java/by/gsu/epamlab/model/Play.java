@@ -8,14 +8,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Performance {
+public class Play {
 
     final int id;
     final String name;
     final String description;
     final List<Date> date;
 
-    public Performance(int id,String name,String description) {
+    public Play() {
+        this.id=0;
+        this.name = "";
+        this.description="";
+        this.date = null;
+    }
+
+    public Play(int id, String name, String description) {
         this.id=id;
         this.name = name;
         this.description=description;
@@ -40,6 +47,8 @@ public class Performance {
     {
         return this.date;
     }
+
+
 
     public int getId() {
         return id;

@@ -33,8 +33,6 @@ public class Login extends HttpServlet{
             if(!login.equals("") && !password.equals("") && dao.isUser(login))
             {
                 User user= dao.getUser(login, password);
-                System.out.println(user);
-
                 req.getSession().setAttribute(Constants.USER, user);
                 resp.sendRedirect(Constants.HOME_PAGE);
             }

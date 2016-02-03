@@ -1,8 +1,6 @@
 <%@ tag import="by.gsu.epamlab.constants.Constants" %>
 <%@tag description="Overall Page template" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="t" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+
 </head>
 
 <body>
@@ -34,20 +33,16 @@
 
 </div>
 <div class="wrapper">
-<c:if test="${not empty user}">
+    <c:if test="${not empty user}">
 
-    <t:if test="${user.role eq 'ADMIN'}">
-        <form name="buttons" action="layoutAction" method="post">
-            <input type="submit" value="Upload Repertoire">
-        </form>
-    </t:if>
-    <t:if test="${user.role eq 'USER'}">
-        <form name="buttons" action="layoutAction" method="post">
-            <input type="submit" value="Booking places">
-        </form>
-    </t:if>
+        <c:if test="${user.role eq 'ADMIN'}">
+            <form name="file_load" action="uploadrepertoire" method="post" enctype="multipart/form-data" >
+                <input type="file" size="20" name="file" >
+                <input type="submit" value="Upload repertoire"/>
+            </form>
+        </c:if>
 
-</c:if>
+    </c:if>
     <jsp:doBody/>
 </div>
 <footer>
