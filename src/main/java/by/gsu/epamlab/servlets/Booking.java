@@ -43,20 +43,12 @@ public class Booking extends HttpServlet{
         int id=Integer.valueOf(req.getParameter("idPlay"));
 
         long date = Long.valueOf(req.getParameter("date"));
-        System.out.println("row:"+ row+ " place:"+ place+ " status:"+status+" price:"+price+ " id:"+id+ " date: "+date);
 
 
         Map<Integer,Place[]> zale=(Map<Integer,Place[]>)req.getSession().getAttribute("zale");
-        zale.get(row)[place-1].setBooking();
+        //zale.get(row)[place-1].setBooking();
         User user=(User)req.getSession().getAttribute("user");
-        DaoMethods.bookPlace(row,place,price,id,date,"1");
-
-        req.setAttribute("zale",zale);
-
-
-
-
-
+        if(DaoMethods.bookPlace(row,place,price,id,date,user.getUserName()))req.setAttribute("zale",zale);
         resp.sendRedirect(req.getHeader("referer"));
     }
 }

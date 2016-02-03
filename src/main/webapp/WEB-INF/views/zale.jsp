@@ -28,29 +28,31 @@
                 </c:forEach>
 
         </div>
-        <form id="form" name="send" action="booking" method="POST">
-                <input id="place" name="place" type="hidden">
-                <input id="status" name="status" type="hidden">
-                <input id="price" name="price" type="hidden">
-                <input name="idPlay" value="${performance.id}" type="hidden">
-                <input name="date" value="${date}" type="hidden">
+        <c:if test="${not empty user}">
+                <form id="form" name="send" action="booking" method="POST">
+                        <input id="place" name="place" type="hidden">
+                        <input id="status" name="status" type="hidden">
+                        <input id="price" name="price" type="hidden">
+                        <input name="idPlay" value="${performance.id}" type="hidden">
+                        <input name="date" value="${date}" type="hidden">
 
-        </form>
-        <script type="text/javascript" src=" http://code.jquery.com/jquery-1.11.2.js "></script>
-        <script type="text/javascript">
-                $(document).ready(function()
-                {
-                        $("div.place").click(function(){
-                                $(this).toggleClass("free booked");
-                                $("#place").attr("value",$(this).attr("id"));
-                                var s = $(this).attr("class").split(' ');
-                                $("#status").attr("value",s[2]);
-                                $("#price").attr("value",s[1]);
-                                $("#form").submit();
+                </form>
+                <script type="text/javascript" src=" http://code.jquery.com/jquery-1.11.2.js "></script>
+                <script type="text/javascript">
+                        $(document).ready(function()
+                        {
+                                $("div.booked, div.free").click(function(){
+                                        $(this).toggleClass("free booked");
+                                        $("#place").attr("value",$(this).attr("id"));
+                                        var s = $(this).attr("class").split(' ');
+                                        $("#status").attr("value",s[2]);
+                                        $("#price").attr("value",s[1]);
+                                        $("#form").submit();
+
+                                });
+
 
                         });
-
-
-                });
-        </script>
+                </script>
+        </c:if>
 

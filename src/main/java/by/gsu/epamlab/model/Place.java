@@ -30,6 +30,10 @@ public class Place {
     {
         if(this.status!=-1) this.status=0;
     }
+    public void setStatus(int status)
+    {
+        this.status=status;
+    }
 
     @Override
     public String toString() {

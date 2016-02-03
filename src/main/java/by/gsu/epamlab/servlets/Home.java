@@ -32,10 +32,6 @@ public class Home extends HttpServlet {
             List<Play> repertoire= repert.getRepertoire();
             req.setAttribute(Constants.REPERTOIRE, repertoire);
             req.getRequestDispatcher(Constants.HOME_JSP).forward(req, resp);
-
-            req.getSession().setAttribute("zale", new Zale().getZale());
-
-
         } catch (ReadFileException e) {
             e.printStackTrace();
             //TODO
