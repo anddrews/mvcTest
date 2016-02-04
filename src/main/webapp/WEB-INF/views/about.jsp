@@ -12,8 +12,8 @@
       </form>
     </c:if>
     <p>About page</p>
-    <h3>${performance.name}</h3>
-    <p>${performance.description}</p>
+    <h3>${play.name}</h3>
+    <p>${play.description}</p>
     <jsp:include page="zale.jsp"/>
 
 

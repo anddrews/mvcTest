@@ -13,6 +13,7 @@
     <input type="text" name="<%=Constants.PASSWORD%>">
     <p>Confirm password</p>
     <input type="text" name="<%=Constants.PASSWORD_SEC%>">
+    <input name="page" type="hidden" value="${page}">
     <input type="submit">
   </form>
 </body>

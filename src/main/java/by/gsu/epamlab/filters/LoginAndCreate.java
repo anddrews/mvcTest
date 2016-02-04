@@ -27,7 +27,7 @@ public class LoginAndCreate implements Filter {
         } else {
             HttpServletResponse resp =
                     (HttpServletResponse)servletResponse;
-            resp.sendRedirect(Constants.HOME_PAGE);
+            resp.sendRedirect(req.getContextPath()+"/");
         }
 
     }

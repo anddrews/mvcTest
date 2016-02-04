@@ -33,7 +33,7 @@
                         <input id="place" name="place" type="hidden">
                         <input id="status" name="status" type="hidden">
                         <input id="price" name="price" type="hidden">
-                        <input name="idPlay" value="${performance.id}" type="hidden">
+                        <input name="idPlay" value="${play.id}" type="hidden">
                         <input name="date" value="${date}" type="hidden">
 
                 </form>

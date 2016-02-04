@@ -33,16 +33,15 @@ public class About extends HttpServlet{
 
         try {
             if(req.getQueryString()!=null) {
-                int id = Integer.valueOf(req.getParameter("id"));
+                int id = Integer.valueOf(req.getParameter(Constants.ID));
                 Play play =repertoire.getPlay(id);
-                req.setAttribute("performance", play);
-                long data=Long.valueOf(req.getParameter("data"));
-                req.setAttribute("date",data);
-                User user=(User)req.getSession().getAttribute("user");
-                System.out.println(user);
+                req.setAttribute(Constants.PLAY, play);
+                long data=Long.valueOf(req.getParameter(Constants.DATE));
+                req.setAttribute(Constants.DATE,data);
+                User user=(User)req.getSession().getAttribute(Constants.USER);
                 String name=user!=null? user.getUserName():"";
                 Map<Integer,Place[]> zale=new Zale().getZale();
-                req.setAttribute("zale", DaoMethods.fillZale(zale, play.getId(), data, name));
+                req.setAttribute(Constants.ZALE, DaoMethods.fillZale(zale, play.getId(), data, name));
 
             }
 

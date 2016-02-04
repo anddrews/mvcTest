@@ -15,11 +15,10 @@ import java.io.IOException;
 
 @WebServlet("/login")
 public class Login extends HttpServlet{
-    String path;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        req.setAttribute(Constants.PAGE, req.getHeader(Constants.GO_BACK));
         req.getRequestDispatcher(Constants.LOGIN_JSP).forward(req, resp);
     }
 
@@ -30,11 +29,11 @@ public class Login extends HttpServlet{
         IUserDao dao=null;
         try{
              dao=FabricDAO.getDAO();
-            if(!login.equals("") && !password.equals("") && dao.isUser(login))
+            if(!login.equals(Constants.EMPTY_STRING) && !password.equals(Constants.EMPTY_STRING) && dao.isUser(login))
             {
                 User user= dao.getUser(login, password);
                 req.getSession().setAttribute(Constants.USER, user);
-                resp.sendRedirect(Constants.HOME_PAGE);
+                resp.sendRedirect(req.getParameter(Constants.PAGE));
             }
             else
             {

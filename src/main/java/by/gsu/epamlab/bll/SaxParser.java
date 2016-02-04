@@ -13,7 +13,6 @@ public class SaxParser extends DefaultHandler
     private enum Tags
     {ZALE,ROW,PLACES,CATEGORY}
 
-    private boolean isRow;
     private boolean isCategory;
     private boolean isPlace;
 
@@ -25,7 +24,6 @@ public class SaxParser extends DefaultHandler
     public SaxParser()
     {
         super();
-        this.isRow =false;
         this.isCategory =false;
         this.isPlace =false;
         results=new TreeMap<>();

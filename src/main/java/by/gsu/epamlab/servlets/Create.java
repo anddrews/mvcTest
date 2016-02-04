@@ -19,6 +19,7 @@ public class Create extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute(Constants.PAGE,req.getHeader(Constants.GO_BACK));
         req.getRequestDispatcher(Constants.CREATE_JSP).forward(req, resp);
     }
 
@@ -33,11 +34,11 @@ public class Create extends HttpServlet{
             dao=FabricDAO.getDAO();
 
             if (!dao.isUser(login) &&
-                    !passw.equals("") &&
+                    !passw.equals(Constants.EMPTY_STRING) &&
                     passw.equals(passwSec) &&
                     dao.createUser(login, passw, Roles.USER)) {
                 req.getSession().setAttribute(Constants.USER, dao.getUser(login, passw));
-                resp.sendRedirect(Constants.HOME_PAGE);
+                resp.sendRedirect(req.getParameter(Constants.PAGE));
             } else if (dao.isUser(login)) {
                 req.setAttribute(Constants.ERROR, Constants.USER_ALREADY_IS);
                 req.setAttribute(Constants.USER, Constants.NOTHING);
@@ -45,7 +46,7 @@ public class Create extends HttpServlet{
                 req.setAttribute(Constants.PASSWORD_SEC, Constants.NOTHING);
                 doGet(req, resp);
 
-            } else if (passw.equals("") || passw.equals(passwSec)) {
+            } else if (passw.equals(Constants.EMPTY_STRING) || passw.equals(passwSec)) {
                 req.setAttribute(Constants.ERROR, Constants.PASSWORD_NOT_CORRECT);
                 req.setAttribute(Constants.PASSWORD, Constants.NOTHING);
                 req.setAttribute(Constants.PASSWORD_SEC, Constants.NOTHING);

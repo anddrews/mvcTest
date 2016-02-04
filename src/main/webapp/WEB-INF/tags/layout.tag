@@ -19,8 +19,8 @@
     <c:choose>
         <c:when test="${empty user}">
             <p style="display: inline-block">Users: Hello guest</p>
-            <a href="<%=Constants.LOGIN_PAGE%>">Login</a>
-            <a href="<%=Constants.CREATE_USER_PAGE%>">Registration</a>
+            <a href="${pageContext.request.contextPath}<%=Constants.LOGIN_PAGE%>">Login</a>
+            <a href="${pageContext.request.contextPath}<%=Constants.CREATE_USER_PAGE%>">Registration</a>
         </c:when>
 
         <c:otherwise>
@@ -46,6 +46,7 @@
     <jsp:doBody/>
 </div>
 <footer>
+    <a href="${pageContext.request.contextPath}/">На главную</a>
     <p> Developed by Kondratenko e-mail:anddrews@tut.by</p>
 </footer>
 

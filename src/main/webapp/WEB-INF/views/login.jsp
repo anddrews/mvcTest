@@ -11,6 +11,7 @@
   <input name="user" type="text">
   <p>Password</p>
   <input name="password" type="password">
+  <input name="page" type="hidden" value="${page}">
   <input type="submit">
 </form>
 

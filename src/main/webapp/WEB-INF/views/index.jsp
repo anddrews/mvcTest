@@ -14,7 +14,7 @@
                 <p>${play.name}
                     <c:forEach var="date" items="${play.date}">
 
-                        <a  href="/mvcTest/about?id=${play.id}&data=${date.time}" style="padding: 5px;">
+                        <a  href="${pageContext.request.contextPath}/about?id=${play.id}&date=${date.time}" style="padding: 5px;">
                            <fmt:formatDate value="${date}" type="date" dateStyle="short" timeStyle="short"/>
                         </a>
                     </c:forEach>

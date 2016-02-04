@@ -1,7 +1,8 @@
 package by.gsu.epamlab.bll;
 
 
-        import by.gsu.epamlab.constants.SQLQueries;
+import by.gsu.epamlab.constants.Constants;
+import by.gsu.epamlab.constants.SQLQueries;
         import by.gsu.epamlab.exception.DAOException;
         import by.gsu.epamlab.model.Place;
         import by.gsu.epamlab.model.Play;
@@ -11,6 +12,7 @@ package by.gsu.epamlab.bll;
         import java.util.Map;
 
 public class DaoMethods {
+    public static final Object LOCK =new Object();
 
     public boolean addNewPlayToDB(Play play)
     {
@@ -20,8 +22,8 @@ public class DaoMethods {
             PreparedStatement ps=connection.prepareStatement(SQLQueries.ADD_NEW_PLAY, Statement.RETURN_GENERATED_KEYS);
             PreparedStatement psDate=connection.prepareStatement(SQLQueries.ADD_NEW_DATE_TO_PLAY)) {
 
-            ps.setString(1,play.getName());
-            ps.setString(2,play.getDescription());
+            ps.setString(Constants.ONE,play.getName());
+            ps.setString(Constants.TWO,play.getDescription());
             ps.executeUpdate();
             ResultSet rs=ps.getGeneratedKeys();
             if(rs.next())
@@ -32,8 +34,8 @@ public class DaoMethods {
 
             for (Date tmp:play.getDate())
             {
-                psDate.setInt(1,id_play);
-                psDate.setTimestamp(2, new Timestamp(tmp.getTime()));
+                psDate.setInt(Constants.ONE,id_play);
+                psDate.setTimestamp(Constants.TWO, new Timestamp(tmp.getTime()));
                 psDate.executeUpdate();
             }
 
@@ -51,35 +53,36 @@ public class DaoMethods {
         try(
                 Connection conn=ConnectionDb.getConnection();
                 PreparedStatement isBrone=conn.prepareStatement(SQLQueries.SELECT_IS_BRONE);
-                PreparedStatement brone=conn.prepareStatement(SQLQueries.INCERT_BRONE);
+                PreparedStatement brone=conn.prepareStatement(SQLQueries.INSERT_BRONE);
                 PreparedStatement broneDel=conn.prepareStatement(SQLQueries.DELETE_BRONE))
             {
-                isBrone.setInt(1,row);
-                isBrone.setInt(2,place);
-                isBrone.setInt(3,idPlay);
-                isBrone.setTimestamp(4, new Timestamp(date));
-                ResultSet isBroneRes=isBrone.executeQuery();
-                if(!isBroneRes.next())
-                {
-                    brone.setInt(1,idPlay);
-                    brone.setTimestamp(2,new Timestamp(date));
-                    brone.setInt(3,row);
-                    brone.setInt(4,place);
-                    brone.setString(5,user);
-                    brone.setInt(6,price);
-                    brone.setInt(7,1);
-                    brone.executeUpdate();
+                isBrone.setInt(Constants.ONE,row);
+                isBrone.setInt(Constants.TWO,place);
+                isBrone.setInt(Constants.THREE,idPlay);
+                isBrone.setTimestamp(Constants.FOR, new Timestamp(date));
+                synchronized (LOCK) {
+                    ResultSet isBroneRes = isBrone.executeQuery();
+                    if (!isBroneRes.next()) {
+                        brone.setInt(Constants.ONE, idPlay);
+                        brone.setTimestamp(Constants.TWO, new Timestamp(date));
+                        brone.setInt(Constants.THREE, row);
+                        brone.setInt(Constants.FOR, place);
+                        brone.setString(Constants.FIVE, user);
+                        brone.setInt(Constants.SIX, price);
+                        brone.setInt(Constants.SEVEN, Constants.ONE);
+                        brone.executeUpdate();
+                    } else {
+                        if(user.equals(isBroneRes.getString(1))) {
+                            broneDel.setInt(Constants.ONE, idPlay);
+                            broneDel.setTimestamp(Constants.TWO, new Timestamp(date));
+                            broneDel.setString(Constants.THREE, user);
+                            broneDel.setInt(Constants.FOR, row);
+                            broneDel.setInt(Constants.FIVE, place);
+                            broneDel.executeUpdate();
+                        }
+                    }
+                    result = true;
                 }
-                else
-                {
-                    broneDel.setInt(1, idPlay);
-                    broneDel.setTimestamp(2,new Timestamp(date));
-                    broneDel.setString(3,user);
-                    broneDel.setInt(4,row);
-                    broneDel.setInt(5,place);
-                    broneDel.executeUpdate();
-                }
-                result=true;
 
 
         } catch (SQLException | DAOException e) {
@@ -95,22 +98,22 @@ public class DaoMethods {
         try(Connection conn=ConnectionDb.getConnection();
             PreparedStatement selectPlaces=conn.prepareStatement(SQLQueries.SELECT_BRONE_PLACE_ON_PLAY))
         {
-            selectPlaces.setInt(1,idPlay);
-            selectPlaces.setTimestamp(2,new Timestamp(date));
+            selectPlaces.setInt(Constants.ONE,idPlay);
+            selectPlaces.setTimestamp(Constants.TWO,new Timestamp(date));
             ResultSet res=selectPlaces.executeQuery();
             while (res.next())
             {
-                int row=res.getInt(1);
-                int place=res.getInt(2);
-                String userInp=res.getString(3);
-                int status=res.getInt(4);
-                if("".equals(user)||!userInp.equals(user))
+                int row=res.getInt(Constants.ONE);
+                int place=res.getInt(Constants.TWO);
+                String userInp=res.getString(Constants.THREE);
+                int status=res.getInt(Constants.FOR);
+                if(Constants.EMPTY_STRING.equals(user)||!userInp.equals(user))
                 {
-                    zale.get(row)[place-1].setSold();
+                    zale.get(row)[place-Constants.ONE].setSold();
                 }
                 else
                 {
-                    zale.get(row)[place-1].setStatus(status);
+                    zale.get(row)[place-Constants.ONE].setStatus(status);
                 }
             }
         } catch (SQLException | DAOException e) {

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="web2">
+    <output-path>$PROJECT_DIR$/out/artifacts</output-path>
+    <root id="archive" name="epam.war">
+      <element id="artifact" artifact-name="mvcTest:war exploded" />
+    </root>
+  </artifact>
+</component>

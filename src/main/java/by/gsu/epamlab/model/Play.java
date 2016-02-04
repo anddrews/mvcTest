@@ -57,7 +57,7 @@ public class Play {
     @Override
     public String toString() {
         String result=name + " ";
-        SimpleDateFormat dateFormat=new SimpleDateFormat(Constants.PERFORMANS_DATE_FORMAT);
+        SimpleDateFormat dateFormat=new SimpleDateFormat(Constants.PLAY_DATE_FORMAT);
         for (Date tmp: date)
         {
             result+= dateFormat.format(tmp)+ " ";

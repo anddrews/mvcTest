@@ -30,18 +30,18 @@ public class UpLoadRepertoire extends HttpServlet {
         InputStreamReader reader = new InputStreamReader(req.getInputStream());
         BufferedReader bufferedReader=new BufferedReader(reader);
         String stringRead;
-        while (!(stringRead=bufferedReader.readLine()).equals(""));
+        while (!(stringRead=bufferedReader.readLine()).equals(Constants.EMPTY_STRING));
 
         while (!(stringRead=bufferedReader.readLine()).startsWith("---")  )
         {
             String name=stringRead;
             StringBuilder description=new StringBuilder();
-            while (!(stringRead=bufferedReader.readLine()).equals(""))
+            while (!(stringRead=bufferedReader.readLine()).equals(Constants.EMPTY_STRING))
             {
                 description.append(stringRead);
             }
             Play play =new Play(0,name,description.toString());
-            while ((stringRead=bufferedReader.readLine())!=null && !stringRead.equals("") )
+            while ((stringRead=bufferedReader.readLine())!=null && !stringRead.equals(Constants.EMPTY_STRING) )
             {
                 String[] rows=stringRead.split(Constants.SEPARATOR);
                 String date=rows[Constants.ZERO].trim();
