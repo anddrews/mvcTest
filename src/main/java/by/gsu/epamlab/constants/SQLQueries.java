@@ -3,10 +3,10 @@ package by.gsu.epamlab.constants;
 
 public class SQLQueries {
     public static String ADD_NEW_PLAY="INSERT INTO play (name,about) values (?,?)";
-    public static String ADD_NEW_DATE_TO_PLAY="INSERT INTO repertoire (id_play,date) values (?,?)";
+    public static String ADD_NEW_DATE_TO_PLAY="INSERT INTO repertoire (id_play,date_play) values (?,?)";
     public static String SELECT_ALL_PLAY="SELECT * FROM play";
     public static String SELECT_ALL_DATE_ON_PLAY="SELECT * FROM repertoire WHERE id_play=?";
-    public static String SELECT_ID_PLAY_ON_DATE="SELECT id FROM repertoire WHERE id_play=? AND date=?";
+    public static String SELECT_ID_PLAY_ON_DATE="SELECT id FROM repertoire WHERE id_play=? AND date_play=?";
 
     public static String SELECT_IS_BRONE="SELECT user FROM orders INNER JOIN users ON " +
             " orders.id_user=users.id WHERE row=? AND place=? AND" +
@@ -20,6 +20,9 @@ public class SQLQueries {
     public static String SELECT_BRONE_PLACE_ON_PLAY="SELECT row,place,user,status " +
             "FROM orders INNER JOIN users ON (orders.id_user=users.id) " +
             "WHERE id_play=( "+ SELECT_ID_PLAY_ON_DATE+" )";
+    public static  String SELECT_ALL_FROM_ORDERS="SELECT orders.id,date_play, name,  user, row, place, price, status FROM "+
+            " users INNER JOIN ((play INNER JOIN repertoire on play.id=repertoire.id_play) INNER JOIN "+
+            " orders ON repertoire.id=orders.id_play ) ON orders.id_user=users.id ";
 
 
 }

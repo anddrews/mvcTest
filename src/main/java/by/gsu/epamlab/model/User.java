@@ -21,6 +21,11 @@ public class User implements Comparable<User>{
         return role.toString();
     }
 
+    public int getIdRole()
+    {
+        return this.role.getNumber();
+    }
+
     @Override
     public String toString() {
         return this.userName+ " "+ getRole();

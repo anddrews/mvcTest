@@ -1,0 +1,73 @@
+body{
+    padding-left: 50px;
+}
+
+.header{
+    padding:20px;
+}
+
+.header p{
+    font-size: 17px;
+    font-weight: bold;;
+    font-style: italic;
+}
+.header a{
+    margin: 10px;
+
+}
+
+body{
+    padding-left: 50px;
+}
+
+.header{
+    margin:20px;
+}
+
+.header p{
+    font-size: 17px;
+    font-weight: bold;;
+    font-style: italic;
+}
+.header a{
+    margin: 10px;
+
+}
+
+.wrapper{
+    padding-left: 50px;
+}
+
+.wrapper p{
+    margin: 5px 42px 5px 15px;
+    padding: 15px;
+    font-size: 21px;
+    font-weight: bold;
+}
+.wrapper p a{
+    font-size: 15px;
+    font-style: italic;
+}
+.courier{
+    margin: 20px;
+}
+.courier a{
+    margin: 20px 0px;
+    font-style: italic;
+}
+.admin{
+    margin: 15px 0px;
+}
+.report{
+    margin: 30px 0px;
+}
+.criteria p{
+    font-size: 17px;
+    font-weight: normal;
+    font-style: italic;
+    margin: -7px;
+    display: inline-block;
+}
+.report td{
+    border-style: groove;
+}

@@ -14,11 +14,13 @@ public class Constants {
     public final static String CREATE_JSP = "/WEB-INF/views/createUser.jsp";
     public final static String ERROR_JSP = "/WEB-INF/views/errorPage.jsp";
     public final static String ABOUT_JSP = "/WEB-INF/views/about.jsp";
+    public final static String COURIER_JSP = "/WEB-INF/views/courier.jsp";
 
     //url for jump
 
     public final static String LOGIN_PAGE="/login";
     public final static String CREATE_USER_PAGE="/login/create";
+    public final static String COURIER_PAGE="/courier";
 
     // String constants
 
@@ -59,6 +61,7 @@ public class Constants {
     public final static int FIVE=5;
     public final static int SIX=6;
     public final static int SEVEN=7;
+    public final static int EIGHT=8;
 
     //error message
     public final static String USER_ALREADY_IS="User with that name already is";

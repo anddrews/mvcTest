@@ -10,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="stylesheet"  type="text/css" href="css/main.css">
+
 
 </head>
 
@@ -18,7 +20,7 @@
 <div class="header">
     <c:choose>
         <c:when test="${empty user}">
-            <p style="display: inline-block">Users: Hello guest</p>
+            <p style="display: inline-block">Hello guest</p>
             <a href="${pageContext.request.contextPath}<%=Constants.LOGIN_PAGE%>">Login</a>
             <a href="${pageContext.request.contextPath}<%=Constants.CREATE_USER_PAGE%>">Registration</a>
         </c:when>
@@ -34,14 +36,20 @@
 </div>
 <div class="wrapper">
     <c:if test="${not empty user}">
+        <div class="courier">
+            <c:if test="${user.idRole < 2}">
+                    <a href="${pageContext.request.contextPath}<%=Constants.COURIER_PAGE%>">Reports</a>
 
-        <c:if test="${user.role eq 'ADMIN'}">
-            <form name="file_load" action="uploadrepertoire" method="post" enctype="multipart/form-data" >
-                <input type="file" size="20" name="file" >
-                <input type="submit" value="Upload repertoire"/>
-            </form>
-        </c:if>
-
+                <div class="admin">
+                    <c:if test="${user.idRole < 1}">
+                        <form name="file_load" action="uploadrepertoire" method="post" enctype="multipart/form-data" >
+                            <input type="file" size="20" name="file" >
+                            <input type="submit" value="Upload repertoire"/>
+                        </form>
+                    </c:if>
+                </div>
+            </c:if>
+        </div>
     </c:if>
     <jsp:doBody/>
 </div>

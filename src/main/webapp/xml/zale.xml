@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zale>
+    <row id="1">
+        <places>8</places>
+        <category>1000</category>
+    </row>
+    <row id="2">
+        <places>10</places>
+        <category>1000</category>
+    </row>
+    <row id="3">
+        <places>10</places>
+        <category>1000</category>
+    </row>
+    <row id="4">
+        <places>15</places>
+        <category>1000</category>
+    </row>
+    <row id="5">
+        <places>17</places>
+        <category>1000</category>
+    </row>
+</zale>

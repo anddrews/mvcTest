@@ -5,7 +5,7 @@
         <div class="zale">
                 <c:set var="id_row" value="0"/>
 
-                <c:forEach var="row" items="${zale}">
+                <c:forEach var="row" items="${zale}" >
                         <c:set var="row_width" value="${row.value}"/>
                         <div id="${id_row=id_row+1}" class="row" >
                                 <c:set var="id_place" value="0"/>

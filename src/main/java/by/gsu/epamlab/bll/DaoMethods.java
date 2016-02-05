@@ -1,20 +1,29 @@
 package by.gsu.epamlab.bll;
 
 
+import by.gsu.epamlab.bll.wrapperSql.*;
 import by.gsu.epamlab.constants.Constants;
+import by.gsu.epamlab.constants.ReportCharacter;
 import by.gsu.epamlab.constants.SQLQueries;
         import by.gsu.epamlab.exception.DAOException;
         import by.gsu.epamlab.model.Place;
         import by.gsu.epamlab.model.Play;
+import by.gsu.epamlab.model.ReportRow;
 
-        import java.sql.*;
-        import java.util.Date;
-        import java.util.Map;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Date;
 
 public class DaoMethods {
     public static final Object LOCK =new Object();
 
-    public boolean addNewPlayToDB(Play play)
+    public static boolean addNewPlayToDB(Play play)
     {
         int id_play=0;
 
@@ -72,7 +81,7 @@ public class DaoMethods {
                         brone.setInt(Constants.SEVEN, Constants.ONE);
                         brone.executeUpdate();
                     } else {
-                        if(user.equals(isBroneRes.getString(1))) {
+                        if(user.equals(isBroneRes.getString(Constants.ONE))) {
                             broneDel.setInt(Constants.ONE, idPlay);
                             broneDel.setTimestamp(Constants.TWO, new Timestamp(date));
                             broneDel.setString(Constants.THREE, user);
@@ -121,6 +130,115 @@ public class DaoMethods {
         }
         return zale;
     }
+
+    public static List<ReportRow> getReport(Map<ReportCharacter,Object> character)
+    {
+        List<ReportRow> result=null;
+        AbstractQuery query= new SelectAllFromOrders();
+        for(Map.Entry<ReportCharacter,Object> entry:character.entrySet())
+        {
+            switch (entry.getKey())
+            {
+                case DATE:
+                {
+                    query=new SelectFromOrdersOnDate(query);
+                    break;
+                }
+                case USER:
+                {
+                    query=new SelectFromOrdersOnUser(query);
+                    break;
+                }
+                case PLAY:
+                {
+                    query=new SelectFromOrdersOnPlay(query);
+                    break;
+                }
+
+            }
+        }
+
+        try(Connection conn=ConnectionDb.getConnection();
+            PreparedStatement select=conn.prepareStatement(query.getQuery())) {
+
+            int count=1;
+            for (Map.Entry<ReportCharacter,Object> entry:character.entrySet())
+            {
+                if(entry.getKey().equals(ReportCharacter.DATE))
+                {
+                    select.setTimestamp(count,(Timestamp)entry.getValue());
+                }
+                else
+                {
+                    String temp=(String)entry.getValue();
+                    select.setString(count,temp);
+                }
+                count++;
+            }
+
+            ResultSet report=select.executeQuery();
+            result=new ArrayList<>();
+            while (report.next())
+            {
+                int id=report.getInt(Constants.ONE);
+                Timestamp date=report.getTimestamp(Constants.TWO);
+                String playName=report.getString(Constants.THREE);
+                String user=report.getString(Constants.FOR);
+                int row=report.getInt(Constants.FIVE);
+                int place=report.getInt(Constants.SIX);
+                int price=report.getInt(Constants.SEVEN);
+                int status=report.getInt(Constants.EIGHT);
+                result.add(new ReportRow(id,date,playName,user,row,place,price,status));
+            }
+
+        } catch (SQLException | DAOException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static void saveRepertoire(InputStream input) throws DAOException {
+        List<Play> result=new ArrayList<>();
+
+        try(InputStreamReader reader = new InputStreamReader(input);
+        BufferedReader bufferedReader=new BufferedReader(reader)) {
+            String stringRead;
+            while (!(stringRead = bufferedReader.readLine()).equals(Constants.EMPTY_STRING)) ;
+
+            while (!(stringRead = bufferedReader.readLine()).startsWith("---")) {
+                String name = stringRead;
+                StringBuilder description = new StringBuilder();
+                while (!(stringRead = bufferedReader.readLine()).equals(Constants.EMPTY_STRING)) {
+                    description.append(stringRead);
+                }
+                Play play = new Play(0, name, description.toString());
+
+                    while ((stringRead = bufferedReader.readLine()) != null && !stringRead.equals(Constants.EMPTY_STRING)) {
+                        String[] rows = stringRead.split(Constants.SEPARATOR);
+                        String date = rows[Constants.ZERO].trim();
+                        String hour = rows[Constants.ONE].trim();
+
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy HH:mm");
+                        dateFormat.setTimeZone(TimeZone.getDefault());
+                        Date dateToSave = dateFormat.parse(date + " " + hour);
+                        play.setNewDate(dateToSave);
+
+
+                    }
+                    result.add(play);
+
+            }
+            for (Play tmp:result) {
+                DaoMethods.addNewPlayToDB(tmp);
+            }
+
+        } catch (IOException | ParseException |ArrayIndexOutOfBoundsException e) {
+            throw new DAOException(e.getMessage());
+        }
+    }
+
+
 
 
 }
