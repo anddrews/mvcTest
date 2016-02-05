@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -31,6 +35,15 @@ public class Courier extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String play=req.getParameter("play");
         String user=req.getParameter("user");
+        String date=req.getParameter("date");
+        SimpleDateFormat format=new SimpleDateFormat("dd-mm-yyyy");
+        Date dat=null;
+        try {
+            dat=format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         criteria=new TreeMap<>();
         if(!play.equals(Constants.EMPTY_STRING))
         {
@@ -40,6 +53,11 @@ public class Courier extends HttpServlet {
         {
             criteria.put(ReportCharacter.USER,user);
         }
+        if(dat!=null)
+        {
+            criteria.put(ReportCharacter.DATE, new Timestamp(dat.getTime()));
+        }
+
         doGet(req,resp);
 
 

@@ -37,7 +37,7 @@
                         <input name="date" value="${date}" type="hidden">
 
                 </form>
-                <script type="text/javascript" src=" http://code.jquery.com/jquery-1.11.2.js "></script>
+                <!--<script type="text/javascript" src=" http://code.jquery.com/jquery-1.11.2.js "></script>-->
                 <script type="text/javascript">
                         $(document).ready(function()
                         {

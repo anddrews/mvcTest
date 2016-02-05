@@ -8,6 +8,7 @@
 
 <t:layout>
   <jsp:body>
+    <script type="text/javascript" src="js/jquery.maskedinput-1.3.min.js"></script>
 
     <form name="criteria" action="courier" method="post" class="criteria">
       <p>User</p>
@@ -15,6 +16,9 @@
       <br>
       <p>Play</p>
       <input type="text" name="play">
+      <br>
+      <p>Date</p>
+      <input type="text" name="date" class="mask">
       <br>
       <input type="submit" value="Create">
     </form>
@@ -43,6 +47,13 @@
         </tr>
       </c:forEach>
     </table>
+    <script type="text/javascript">
+      jQuery(function(){
+        jQuery(".mask").mask("99-99-9999");
+      });
+    </script>
+
+
 
 
   </jsp:body>

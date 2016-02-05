@@ -2,7 +2,7 @@
 <%@tag description="Overall Page template" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -11,6 +11,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="stylesheet"  type="text/css" href="css/main.css">
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js" ></script>
+    <!--<script type="text/javascript" src=" http://code.jquery.com/jquery-1.11.2.js "></script>-->
 
 
 </head>
