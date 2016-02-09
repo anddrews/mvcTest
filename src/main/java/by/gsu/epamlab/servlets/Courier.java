@@ -4,6 +4,9 @@ package by.gsu.epamlab.servlets;
 import by.gsu.epamlab.bll.DaoMethods;
 import by.gsu.epamlab.constants.Constants;
 import by.gsu.epamlab.constants.ReportCharacter;
+import by.gsu.epamlab.exception.DAOException;
+import by.gsu.epamlab.fabrics.FabricDAOMethods;
+import by.gsu.epamlab.interfaces.IDaoMethods;
 import by.gsu.epamlab.model.ReportRow;
 
 import javax.servlet.ServletException;
@@ -22,41 +25,65 @@ import java.util.TreeMap;
 
 @WebServlet("/courier")
 public class Courier extends HttpServlet {
-   Map<ReportCharacter, Object> criteria= new TreeMap<>();
+   Map<ReportCharacter, String> criteria= new TreeMap<>();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<ReportRow> report= DaoMethods.getReport(criteria);
-        req.setAttribute("report",report);
-        req.getRequestDispatcher(Constants.COURIER_JSP).forward(req,resp);
-    }
+        IDaoMethods dao= FabricDAOMethods.getDaoMethods();
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String play=req.getParameter("play");
-        String user=req.getParameter("user");
-        String date=req.getParameter("date");
-        SimpleDateFormat format=new SimpleDateFormat("dd-mm-yyyy");
-        Date dat=null;
-        try {
-            dat=format.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        String play=req.getParameter(Constants.PLAY);
+        String user=req.getParameter(Constants.USER);
+        String date=req.getParameter(Constants.DATE);
+
 
         criteria=new TreeMap<>();
-        if(!play.equals(Constants.EMPTY_STRING))
+        if(play!=null && !play.equals(Constants.EMPTY_STRING))
         {
             criteria.put(ReportCharacter.PLAY,play);
+            req.setAttribute(Constants.PLAY,play);
         }
-        if(!user.equals(Constants.EMPTY_STRING))
+        if(user!=null && !user.equals(Constants.EMPTY_STRING))
         {
             criteria.put(ReportCharacter.USER,user);
+            req.setAttribute(Constants.USER_NAME,user);
+
         }
-        if(dat!=null)
+        if(date!=null && !date.equals(Constants.EMPTY_STRING))
         {
-            criteria.put(ReportCharacter.DATE, new Timestamp(dat.getTime()));
+            criteria.put(ReportCharacter.DATE, date);
+            req.setAttribute(Constants.DATE,date);
+
         }
+
+        List<ReportRow> report= dao.getReport(criteria);
+        req.setAttribute(Constants.REPORT,report);
+        req.getRequestDispatcher(Constants.COURIER_JSP).forward(req, resp);
+    }
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        IDaoMethods dao= FabricDAOMethods.getDaoMethods();
+
+        String[] id=req.getParameterValues(Constants.ID);
+        try {
+            if (id != null) {
+                String action = req.getParameter(Constants.ACTION);
+
+                for (String tmp : id) {
+
+                    if (action.equals(Constants.BUY))
+                        dao.courierBuy(Integer.valueOf(tmp));
+                    else
+                        dao.courierDel(Integer.valueOf(tmp));
+                }
+
+
+            }
+        }catch (DAOException e)
+        {
+            resp.sendRedirect(Constants.ERROR_JSP);
+        }
+
+
 
         doGet(req,resp);
 

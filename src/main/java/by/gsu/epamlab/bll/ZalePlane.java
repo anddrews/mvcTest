@@ -11,22 +11,27 @@ import java.util.Map;
 
 public class ZalePlane {
 
-    public static Map<Integer,Place[]> getPlane()
-    {
-        Map<Integer,Place[]> results=null;
+    private Map<Integer,Place[]> results;
+
+    public ZalePlane(String filePath) {
+
         try {
             XMLReader reader = XMLReaderFactory.createXMLReader();
             SaxParser handler = new SaxParser();
             reader.setContentHandler(handler);
 
-            reader.parse("D:/kursy/java/mvcTest/src/main/webapp/zale.xml");
+            reader.parse(filePath);
 
-             results=handler.getResults();
+            results=handler.getResults();
         }
         catch (SAXException | IOException e) {
 
             e.printStackTrace();
         }
+    }
+
+    public  Map<Integer,Place[]> getPlane()
+    {
         return results;
     }
 

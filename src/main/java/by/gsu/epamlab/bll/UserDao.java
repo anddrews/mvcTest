@@ -3,6 +3,7 @@ package by.gsu.epamlab.bll;
 
 import by.gsu.epamlab.constants.Constants;
 import by.gsu.epamlab.constants.Roles;
+import by.gsu.epamlab.constants.SQLQueries;
 import by.gsu.epamlab.exception.DAOException;
 import by.gsu.epamlab.interfaces.IUserDao;
 import by.gsu.epamlab.model.User;
@@ -14,11 +15,7 @@ import java.sql.SQLException;
 
 public class UserDao implements IUserDao {
 
-    private final static Object lock=new Object();
-
-    private static final String GET_USER="SELECT * FROM users WHERE user=?";
-    private static final String CHECK_USER="SELECT * FROM users WHERE user=? AND password=?";
-    private static final String CREATE_USER="INSERT INTO users(user,password,role) VALUES (?,?,?) ";
+    private final static Object LOCK =UserDao.class;
     private Connection connection;
 
 
@@ -32,7 +29,7 @@ public class UserDao implements IUserDao {
         ResultSet resultSet;
 
 
-        try(PreparedStatement preparedStatement=connection.prepareStatement(CHECK_USER)) {
+        try(PreparedStatement preparedStatement=connection.prepareStatement(SQLQueries.CHECK_USER)) {
 
             preparedStatement.setString(Constants.ONE,login);
             preparedStatement.setString(Constants.TWO,passw);
@@ -55,20 +52,28 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public boolean createUser(String login, String passw, Roles role) throws DAOException {
-        boolean result=false;
+    public User createUser(String login, String passw, Roles role) throws DAOException {
+        User result=null;
         int count=0;
-        synchronized (lock) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER)) {
 
-                if (!isUser(login)) {
+            try (PreparedStatement createUser = connection.prepareStatement(SQLQueries.CREATE_USER);
+                    PreparedStatement getUser=connection.prepareStatement(SQLQueries.GET_USER)) {
 
-                    preparedStatement.setString(Constants.ONE, login);
-                    preparedStatement.setString(Constants.TWO, passw);
-                    preparedStatement.setInt(Constants.THREE, role.getNumber());
-                    count = preparedStatement.executeUpdate();
-                    if (count > 0) {
-                        result = true;
+                getUser.setString(Constants.ONE,login);
+
+                createUser.setString(Constants.ONE, login);
+                createUser.setString(Constants.TWO, passw);
+                createUser.setInt(Constants.THREE, role.getNumber());
+
+                synchronized (LOCK)
+                {
+                    ResultSet isUser=getUser.executeQuery();
+
+                    if (!isUser.next()) {
+                        count = createUser.executeUpdate();
+                        if (count > 0) {
+                            result = getUser(login, passw);
+                        }
                     }
                 }
                 return result;
@@ -76,30 +81,10 @@ public class UserDao implements IUserDao {
             } catch (SQLException e) {
                 throw new DAOException(e.getMessage());
             }
-        }
+
 
     }
 
-    @Override
-    public boolean isUser(String login) throws DAOException {
-        ResultSet resultSet;
-        boolean result=false;
-
-        try(PreparedStatement preparedStatement=connection.prepareStatement(GET_USER)) {
-            preparedStatement.setString(Constants.ONE,login);
-
-            resultSet=preparedStatement.executeQuery();
-            if(resultSet.next())
-            {
-                result=true;
-            }
-            return result;
-
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage());
-        }
-
-    }
 
     @Override
     public void closeConnection() {

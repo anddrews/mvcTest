@@ -58,12 +58,12 @@ public class RepertoireDao implements IRepertoire{
 
     @Override
     public List<Play> getRepertoire() throws ReadFileException {
-        return this.plays;
+        return plays;
     }
 
     @Override
     public Play getPlay(int id) throws ReadFileException {
-        Play result=null;
+        Play result=new Play();
 
         for(Play tmp:this.reper())
         {

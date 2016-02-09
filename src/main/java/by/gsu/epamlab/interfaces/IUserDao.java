@@ -7,7 +7,6 @@ import by.gsu.epamlab.model.User;
 
 public interface IUserDao {
     User getUser(String login, String passw) throws DAOException;
-    boolean createUser(String login, String passw, Roles role) throws DAOException;
-    boolean isUser(String login) throws DAOException;
+    User createUser(String login, String passw, Roles role) throws DAOException;
     void closeConnection();
 }

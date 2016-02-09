@@ -5,7 +5,6 @@ import by.gsu.epamlab.exception.ReadFileException;
 import by.gsu.epamlab.fabrics.FabricRepertoire;
 import by.gsu.epamlab.interfaces.IRepertoire;
 import by.gsu.epamlab.model.Play;
-import by.gsu.epamlab.model.Zale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,10 +18,7 @@ import java.util.List;
 public class Home extends HttpServlet {
 
 
-    @Override
-    public void init() throws ServletException {
 
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

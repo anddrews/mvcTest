@@ -5,9 +5,10 @@ import by.gsu.epamlab.bll.wrapperSql.*;
 import by.gsu.epamlab.constants.Constants;
 import by.gsu.epamlab.constants.ReportCharacter;
 import by.gsu.epamlab.constants.SQLQueries;
-        import by.gsu.epamlab.exception.DAOException;
-        import by.gsu.epamlab.model.Place;
-        import by.gsu.epamlab.model.Play;
+import by.gsu.epamlab.exception.DAOException;
+import by.gsu.epamlab.interfaces.IDaoMethods;
+import by.gsu.epamlab.model.Place;
+import by.gsu.epamlab.model.Play;
 import by.gsu.epamlab.model.ReportRow;
 
 import java.io.BufferedReader;
@@ -20,10 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
 
-public class DaoMethods {
+public class DaoMethods implements IDaoMethods{
     public static final Object LOCK =new Object();
 
-    public static boolean addNewPlayToDB(Play play)
+    public  boolean addNewPlayToDB(Play play)
     {
         int id_play=0;
 
@@ -56,7 +57,7 @@ public class DaoMethods {
         return false;
     }
 
-    public static boolean bookPlace(int row,int place, int price, int idPlay, long date, String user)
+    public  boolean bookPlace(int row,int place, int price, int idPlay, long date, String user)
     {
         boolean result=false;
         try(
@@ -102,7 +103,7 @@ public class DaoMethods {
         return result;
     }
 
-    public static Map<Integer,Place[]> fillZale(Map<Integer,Place[]> zale, int idPlay, long date, String user)
+    public  void fillZale(ZalePlane zale, int idPlay, long date, String user)
     {
         try(Connection conn=ConnectionDb.getConnection();
             PreparedStatement selectPlaces=conn.prepareStatement(SQLQueries.SELECT_BRONE_PLACE_ON_PLAY))
@@ -110,6 +111,7 @@ public class DaoMethods {
             selectPlaces.setInt(Constants.ONE,idPlay);
             selectPlaces.setTimestamp(Constants.TWO,new Timestamp(date));
             ResultSet res=selectPlaces.executeQuery();
+            Map<Integer,Place[]> zalePlane=zale.getPlane();
             while (res.next())
             {
                 int row=res.getInt(Constants.ONE);
@@ -118,24 +120,23 @@ public class DaoMethods {
                 int status=res.getInt(Constants.FOR);
                 if(Constants.EMPTY_STRING.equals(user)||!userInp.equals(user))
                 {
-                    zale.get(row)[place-Constants.ONE].setSold();
+                    zalePlane.get(row)[place-Constants.ONE].setSold();
                 }
                 else
                 {
-                    zale.get(row)[place-Constants.ONE].setStatus(status);
+                    zalePlane.get(row)[place-Constants.ONE].setStatus(status);
                 }
             }
         } catch (SQLException | DAOException e) {
             e.printStackTrace();
         }
-        return zale;
     }
 
-    public static List<ReportRow> getReport(Map<ReportCharacter,Object> character)
+    public   List<ReportRow> getReport( Map<ReportCharacter, String> character)
     {
         List<ReportRow> result=null;
         AbstractQuery query= new SelectAllFromOrders();
-        for(Map.Entry<ReportCharacter,Object> entry:character.entrySet())
+        for(Map.Entry<ReportCharacter,String> entry:character.entrySet())
         {
             switch (entry.getKey())
             {
@@ -162,16 +163,23 @@ public class DaoMethods {
             PreparedStatement select=conn.prepareStatement(query.getQuery())) {
 
             int count=1;
-            for (Map.Entry<ReportCharacter,Object> entry:character.entrySet())
+            for (Map.Entry<ReportCharacter,String> entry:character.entrySet())
             {
                 if(entry.getKey().equals(ReportCharacter.DATE))
                 {
-                    select.setTimestamp(count,(Timestamp)entry.getValue());
+                    SimpleDateFormat format=new SimpleDateFormat(Constants.FORMAT_DATE_FOR_REPORTS);
+                    try {
+                        Date dat=format.parse(entry.getValue());
+                        select.setTimestamp(count,new Timestamp(dat.getTime()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        //TODO in date not parse simply not add to request
+                    }
+
                 }
                 else
                 {
-                    String temp=(String)entry.getValue();
-                    select.setString(count,temp);
+                    select.setString(count,entry.getValue());
                 }
                 count++;
             }
@@ -197,15 +205,13 @@ public class DaoMethods {
         return result;
     }
 
-    public static void saveRepertoire(InputStream input) throws DAOException {
+    public  void saveRepertoire(InputStream input) throws DAOException {
         List<Play> result=new ArrayList<>();
 
         try(InputStreamReader reader = new InputStreamReader(input);
-        BufferedReader bufferedReader=new BufferedReader(reader)) {
+                BufferedReader bufferedReader=new BufferedReader(reader)) {
             String stringRead;
-            while (!(stringRead = bufferedReader.readLine()).equals(Constants.EMPTY_STRING)) ;
-
-            while (!(stringRead = bufferedReader.readLine()).startsWith("---")) {
+            while ((stringRead = bufferedReader.readLine())!=null) {
                 String name = stringRead;
                 StringBuilder description = new StringBuilder();
                 while (!(stringRead = bufferedReader.readLine()).equals(Constants.EMPTY_STRING)) {
@@ -226,17 +232,44 @@ public class DaoMethods {
 
 
                     }
-                    result.add(play);
+                result.add(play);
 
             }
             for (Play tmp:result) {
-                DaoMethods.addNewPlayToDB(tmp);
+                addNewPlayToDB(tmp);
             }
 
         } catch (IOException | ParseException |ArrayIndexOutOfBoundsException e) {
             throw new DAOException(e.getMessage());
         }
     }
+
+    public  boolean courierBuy(int id) throws DAOException {
+        boolean result=false;
+        try(Connection conn=ConnectionDb.getConnection();
+            PreparedStatement buy=conn.prepareStatement(SQLQueries.MAKE_ORDER)) {
+            buy.setInt(Constants.ONE,id);
+           if( buy.executeUpdate()==1) result=true;
+            return result;
+        } catch (SQLException | DAOException e) {
+            throw new DAOException(e.getMessage());
+        }
+
+    }
+
+    public  boolean courierDel(int id) throws DAOException {
+        boolean result=false;
+        try(Connection conn=ConnectionDb.getConnection();
+            PreparedStatement buy=conn.prepareStatement(SQLQueries.DELETE_BRONE_ROW)) {
+            buy.setInt(Constants.ONE,id);
+           if( buy.executeUpdate()==1) result=true;
+            return result;
+        } catch (SQLException | DAOException e) {
+            throw new DAOException(e.getMessage());
+        }
+
+    }
+
 
 
 

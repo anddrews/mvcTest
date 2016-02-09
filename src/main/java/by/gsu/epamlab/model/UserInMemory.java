@@ -4,7 +4,7 @@ package by.gsu.epamlab.model;
 import by.gsu.epamlab.constants.Roles;
 
 
-public class UserInMemory implements Comparable<UserInMemory>{
+public class UserInMemory {
     private final String userName;
     private final Roles role;
     private final String password;
@@ -28,8 +28,5 @@ public class UserInMemory implements Comparable<UserInMemory>{
         return password;
     }
 
-    @Override
-    public int compareTo(UserInMemory o) {
-        return o.getUserName().compareTo(this.userName);
-    }
+
 }

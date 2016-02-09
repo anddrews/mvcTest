@@ -30,7 +30,7 @@ public class MemoryUserDao implements IUserDao {
 
         User result=null;
 
-        if(isUser(login)&& users.get(login).getPassword().equals(passw))
+        if(users.containsKey(login)&& users.get(login).getPassword().equals(passw))
         {
             result= new User(users.get(login).getUserName(),users.get(login).getRole());
         }
@@ -38,15 +38,15 @@ public class MemoryUserDao implements IUserDao {
     }
 
     @Override
-    public boolean createUser(String login, String passw, Roles role) {
-        boolean result=false;
+    public User createUser(String login, String passw, Roles role) {
+        User result=null;
         synchronized (lock){
-            if(!isUser(login))
+            if(!users.containsKey(login))
             {
                 users.put(login,new UserInMemory(login,role,passw));
-                if(isUser(login))
+                if(users.containsKey(login))
                 {
-                    result=true;
+                    result=getUser(login, passw);
                 }
             }
         }
@@ -54,11 +54,11 @@ public class MemoryUserDao implements IUserDao {
         return result;
     }
 
-    @Override
+   /* @Override
     public boolean isUser(String login) {
 
         return users.containsKey(login);
-    }
+    }*/
 
     @Override
     public void closeConnection() {

@@ -30,7 +30,7 @@ public class Constants {
     public final static String PASSWORD_SEC="passwordSec";
     public final static String ERROR="error";
     public final static String BAD_PARAMETER="Bad parameter";
-    public final static String NOTHING="";
+    public final static String EMPTY_STRING ="";
     public final static String PLAY_DATE_FORMAT ="DD.MM";
     public final static String DB_URL="dbUrl";
     public final static String DRIVER="driver";
@@ -47,7 +47,14 @@ public class Constants {
     public final static String PAGE ="page";
     public final static String ID_PLAY ="idPlay";
     public final static String GO_BACK ="referer";
-    public final static String EMPTY_STRING ="";
+    public final static String PATH_TO_SHEME_ZALE ="WEB-INF/resources/zale.xml";
+    public final static String NAME_INPUT_UPLOAD_REPERTOIRE ="file";
+    public final static String REPORT ="report";
+    public final static String USER_NAME ="userName";
+    public final static String FORMAT_DATE_FOR_REPORTS ="dd-mm-yyyy";
+    public final static String ACTION ="action";
+    public final static String BUY ="buy";
+    public final static String DEL ="del";
 
 
 

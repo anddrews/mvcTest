@@ -3,10 +3,15 @@ package by.gsu.epamlab.model;
 
 import by.gsu.epamlab.constants.Roles;
 
-public class User implements Comparable<User>{
+public class User {
     private final String userName;
     private final Roles role;
 
+
+    public User() {
+        this.userName = "";
+        this.role = Roles.GUEST;
+    }
 
     public User(String userName, Roles role) {
         this.userName = userName;
@@ -31,8 +36,5 @@ public class User implements Comparable<User>{
         return this.userName+ " "+ getRole();
     }
 
-    @Override
-    public int compareTo(User o) {
-        return o.getUserName().compareTo(this.userName);
-    }
+
 }

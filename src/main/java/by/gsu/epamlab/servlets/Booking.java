@@ -2,10 +2,11 @@ package by.gsu.epamlab.servlets;
 
 import by.gsu.epamlab.bll.DaoMethods;
 import by.gsu.epamlab.constants.Constants;
+import by.gsu.epamlab.fabrics.FabricDAOMethods;
+import by.gsu.epamlab.interfaces.IDaoMethods;
 import by.gsu.epamlab.model.Place;
 import by.gsu.epamlab.model.Play;
 import by.gsu.epamlab.model.User;
-import by.gsu.epamlab.model.Zale;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,17 +22,17 @@ import java.util.Map;
 import java.util.TimeZone;
 
 @WebServlet("/booking")
-public class Booking extends HttpServlet{
+public class Booking extends AbstractServlet{
+
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        req.getRequestDispatcher(Constants.ABOUT_JSP).forward(req, resp);
-
+    public void init() throws ServletException {
+        forwardPath=Constants.ABOUT_JSP;
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        IDaoMethods dao= FabricDAOMethods.getDaoMethods();
 
         String[] placeStr=(req.getParameter(Constants.PLACE)).split(Constants.SEPARATOR_FOR_PLACE);
         int row=Integer.valueOf(placeStr[0]);
@@ -43,7 +44,7 @@ public class Booking extends HttpServlet{
 
         Map<Integer,Place[]> zale=(Map<Integer,Place[]>)req.getSession().getAttribute(Constants.ZALE);
         User user=(User)req.getSession().getAttribute(Constants.USER);
-        if(DaoMethods.bookPlace(row,place,price,id,date,user.getUserName()))req.setAttribute(Constants.ZALE,zale);
+        if(dao.bookPlace(row,place,price,id,date,user.getUserName()))req.setAttribute(Constants.ZALE,zale);
         resp.sendRedirect(req.getHeader(Constants.GO_BACK));
     }
 }

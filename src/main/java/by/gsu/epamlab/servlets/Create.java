@@ -6,6 +6,7 @@ import by.gsu.epamlab.constants.Roles;
 import by.gsu.epamlab.fabrics.FabricDAO;
 import by.gsu.epamlab.interfaces.IUserDao;
 import by.gsu.epamlab.exception.DAOException;
+import by.gsu.epamlab.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,16 +16,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/login/create")
-public class Create extends HttpServlet{
+public class Create extends AbstractServlet{
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute(Constants.PAGE,req.getHeader(Constants.GO_BACK));
-        req.getRequestDispatcher(Constants.CREATE_JSP).forward(req, resp);
+    public void init() throws ServletException {
+        forwardPath=Constants.CREATE_JSP;
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+
         String login=req.getParameter(Constants.USER);
         String passw=req.getParameter(Constants.PASSWORD);
         String passwSec=req.getParameter(Constants.PASSWORD_SEC);
@@ -32,30 +34,20 @@ public class Create extends HttpServlet{
         try {
 
             dao=FabricDAO.getDAO();
+            User user;
 
-            if (!dao.isUser(login) &&
-                    !passw.equals(Constants.EMPTY_STRING) &&
-                    passw.equals(passwSec) &&
-                    dao.createUser(login, passw, Roles.USER)) {
-                req.getSession().setAttribute(Constants.USER, dao.getUser(login, passw));
+            if (!login.equals(Constants.EMPTY_STRING)&&!passw.equals(Constants.EMPTY_STRING)
+                    && passw.equals(passwSec)
+                    && ((user=dao.createUser(login, passw, Roles.USER))!=null))
+            {
+                req.getSession().setAttribute(Constants.USER, user);
                 resp.sendRedirect(req.getParameter(Constants.PAGE));
-            } else if (dao.isUser(login)) {
-                req.setAttribute(Constants.ERROR, Constants.USER_ALREADY_IS);
-                req.setAttribute(Constants.USER, Constants.NOTHING);
-                req.setAttribute(Constants.PASSWORD, Constants.NOTHING);
-                req.setAttribute(Constants.PASSWORD_SEC, Constants.NOTHING);
-                doGet(req, resp);
 
-            } else if (passw.equals(Constants.EMPTY_STRING) || passw.equals(passwSec)) {
-                req.setAttribute(Constants.ERROR, Constants.PASSWORD_NOT_CORRECT);
-                req.setAttribute(Constants.PASSWORD, Constants.NOTHING);
-                req.setAttribute(Constants.PASSWORD_SEC, Constants.NOTHING);
-                doGet(req, resp);
             } else {
                 req.setAttribute(Constants.ERROR,Constants.SOME_PROBLEM);
-                req.setAttribute(Constants.USER, Constants.NOTHING);
-                req.setAttribute(Constants.PASSWORD, Constants.NOTHING);
-                req.setAttribute(Constants.PASSWORD_SEC, Constants.NOTHING);
+                req.setAttribute(Constants.USER, Constants.EMPTY_STRING);
+                req.setAttribute(Constants.PASSWORD, Constants.EMPTY_STRING);
+                req.setAttribute(Constants.PASSWORD_SEC, Constants.EMPTY_STRING);
                 doGet(req, resp);
             }
         }

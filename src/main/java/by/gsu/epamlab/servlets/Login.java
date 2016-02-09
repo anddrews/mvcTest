@@ -14,12 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/login")
-public class Login extends HttpServlet{
+public class Login extends AbstractServlet{
+
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute(Constants.PAGE, req.getHeader(Constants.GO_BACK));
-        req.getRequestDispatcher(Constants.LOGIN_JSP).forward(req, resp);
+    public void init() throws ServletException {
+        forwardPath=Constants.LOGIN_JSP;
     }
 
     @Override
@@ -28,10 +28,11 @@ public class Login extends HttpServlet{
         String password=req.getParameter(Constants.PASSWORD).trim();
         IUserDao dao=null;
         try{
-             dao=FabricDAO.getDAO();
-            if(!login.equals(Constants.EMPTY_STRING) && !password.equals(Constants.EMPTY_STRING) && dao.isUser(login))
+            dao=FabricDAO.getDAO();
+            User user;
+            if(!login.equals(Constants.EMPTY_STRING) && !password.equals(Constants.EMPTY_STRING)
+                    && ((user=dao.getUser(login,password))!=null))
             {
-                User user= dao.getUser(login, password);
                 req.getSession().setAttribute(Constants.USER, user);
                 resp.sendRedirect(req.getParameter(Constants.PAGE));
             }
