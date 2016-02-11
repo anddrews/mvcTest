@@ -5,14 +5,32 @@
  http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
 
   <display-name>mvcTest</display-name>
+
+    <filter-mapping>
+        <filter-name>filterEmpty</filter-name>
+        <url-pattern>/createPage/create</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>filterEmpty</filter-name>
+        <url-pattern>/loginPage/login</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>isUser</filter-name>
+        <url-pattern>/loginPage/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>isUser</filter-name>
+        <url-pattern>/createPage/*</url-pattern>
+    </filter-mapping>
+
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.css</url-pattern>
         <url-pattern>*.js</url-pattern>
     </servlet-mapping>
-    <filter-mapping>
-        <filter-name>filterEmpty</filter-name>
-        <servlet-name>login</servlet-name>
-    </filter-mapping>
+
 
 </web-app>

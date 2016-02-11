@@ -1,7 +1,6 @@
 package by.gsu.epamlab.servlets;
 
 
-import by.gsu.epamlab.bll.DaoMethods;
 import by.gsu.epamlab.constants.Constants;
 import by.gsu.epamlab.constants.ReportCharacter;
 import by.gsu.epamlab.exception.DAOException;
@@ -15,10 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;

@@ -6,7 +6,7 @@
 </head>
 <body>
   ${error}
-  <form name="createUser" action="create" method="post">
+  <form name="createUser" action="createPage/create" method="post">
     <p>Login</p>
     <input type="text" name="<%=Constants.USER%>">
     <p>Password</p>
@@ -14,6 +14,7 @@
     <p>Confirm password</p>
     <input type="text" name="<%=Constants.PASSWORD_SEC%>">
     <input name="page" type="hidden" value="${page}">
+    <input name="action" type="hidden" value="create">
     <input type="submit">
   </form>
 </body>

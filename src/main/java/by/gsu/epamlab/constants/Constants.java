@@ -18,8 +18,8 @@ public class Constants {
 
     //url for jump
 
-    public final static String LOGIN_PAGE="/login";
-    public final static String CREATE_USER_PAGE="/login/create";
+    public final static String LOGIN_PAGE="/loginPage";
+    public final static String CREATE_USER_PAGE="/createPage";
     public final static String COURIER_PAGE="/courier";
 
     // String constants

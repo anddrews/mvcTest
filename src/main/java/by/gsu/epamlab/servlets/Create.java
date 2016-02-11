@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/login/create")
+@WebServlet("/createPage/create")
 public class Create extends AbstractServlet{
 
     @Override

@@ -86,6 +86,11 @@ public class DaoMethods implements IDaoMethods{
                 synchronized (LOCK) {
                     ResultSet isBroneRes = isBrone.executeQuery();
                     if (!isBroneRes.next()) {
+                        /*try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }*/
                         brone.executeUpdate();
                     } else {
                         if(user.equals(isBroneRes.getString(Constants.ONE))) {
