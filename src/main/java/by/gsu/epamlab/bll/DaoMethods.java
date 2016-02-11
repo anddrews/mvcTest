@@ -49,7 +49,7 @@ public class DaoMethods implements IDaoMethods{
             }
 
             return false;
-        } catch (DAOException | SQLException e) {
+        } catch ( SQLException e) {
             throw new DAOException(e.getMessage());
         }
 
@@ -100,7 +100,7 @@ public class DaoMethods implements IDaoMethods{
                 }
                 return true;
 
-        } catch (SQLException | DAOException e) {
+        } catch (SQLException  e) {
            throw new DAOException(e.getMessage());
         }
     }
@@ -128,7 +128,7 @@ public class DaoMethods implements IDaoMethods{
                     zalePlane.get(row)[place-Constants.ONE].setStatus(status);
                 }
             }
-        } catch (SQLException | DAOException e) {
+        } catch (SQLException  e) {
             throw new DAOException(e.getMessage());
         }
     }
@@ -173,7 +173,7 @@ public class DaoMethods implements IDaoMethods{
                         select.setTimestamp(count,new Timestamp(dat.getTime()));
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        //TODO in date not parse simply not add to request
+                        //TODO if date not parse simply not add to request
                     }
 
                 }
@@ -200,7 +200,7 @@ public class DaoMethods implements IDaoMethods{
             }
             return result;
 
-        } catch (SQLException | DAOException e) {
+        } catch (SQLException  e) {
             throw new DAOException(e.getMessage());
         }
 
@@ -252,7 +252,7 @@ public class DaoMethods implements IDaoMethods{
             buy.setInt(Constants.ONE,id);
            if( buy.executeUpdate()==1) result=true;
             return result;
-        } catch (SQLException | DAOException e) {
+        } catch (SQLException  e) {
             throw new DAOException(e.getMessage());
         }
 
@@ -265,7 +265,7 @@ public class DaoMethods implements IDaoMethods{
             buy.setInt(Constants.ONE,id);
            if( buy.executeUpdate()==1) result=true;
             return result;
-        } catch (SQLException | DAOException e) {
+        } catch (SQLException  e) {
             throw new DAOException(e.getMessage());
         }
 

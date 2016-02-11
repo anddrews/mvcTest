@@ -38,14 +38,16 @@
       <artifactId>jstl</artifactId>
       <version>1.2</version>
     </dependency>
-
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.38</version>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>tomcat-jdbc</artifactId>
+      <version>8.0.30</version>
     </dependency>
-
-
+    <dependency>
+      <groupId>tomcat</groupId>
+      <artifactId>tomcat-juli</artifactId>
+      <version>5.5.12</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>epam</finalName>

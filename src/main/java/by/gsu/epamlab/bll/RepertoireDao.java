@@ -29,7 +29,7 @@ public class RepertoireDao implements IRepertoire{
         try (Connection connection=ConnectionDb.getConnection();
              PreparedStatement psPlay=connection.prepareStatement(SQLQueries.SELECT_ALL_PLAY);
              PreparedStatement psDate=connection.prepareStatement(SQLQueries.SELECT_ALL_DATE_ON_PLAY)){
-            ResultSet getPlays= psPlay.executeQuery();
+             ResultSet getPlays= psPlay.executeQuery();
             while (getPlays.next())
             {
                 int idPlay=getPlays.getInt(1);
@@ -45,7 +45,7 @@ public class RepertoireDao implements IRepertoire{
                 }
                 plays.add(play);
             }
-        } catch (SQLException | DAOException e) {
+        } catch (SQLException | DAOException  e) {
             e.printStackTrace();
         }
 
