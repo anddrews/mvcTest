@@ -13,14 +13,14 @@ import java.util.Map;
 
 public interface IDaoMethods {
 
-     boolean addNewPlayToDB(Play play);
+     boolean addNewPlayToDB(Play play) throws DAOException;
 
 
-     boolean bookPlace(int row,int place, int price, int idPlay, long date, String user);
+     boolean bookPlace(int row,int place, int price, int idPlay, long date, String user) throws DAOException;
 
-     void fillZale(ZalePlane zale, int idPlay, long date, String user);
+     void fillZale(ZalePlane zale, int idPlay, long date, String user) throws DAOException;
 
-     List<ReportRow> getReport( Map<ReportCharacter, String> character);
+     List<ReportRow> getReport( Map<ReportCharacter, String> character) throws DAOException;
 
      void saveRepertoire(InputStream input) throws DAOException;
 

@@ -12,6 +12,7 @@
   <p>Password</p>
   <input name="password" type="password">
   <input name="page" type="hidden" value="${page}">
+  <input name="action" type="hidden" value="login">
   <input type="submit">
 </form>
 

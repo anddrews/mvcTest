@@ -18,8 +18,6 @@ import java.util.List;
 public class Home extends HttpServlet {
 
 
-
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
@@ -29,8 +27,7 @@ public class Home extends HttpServlet {
             req.setAttribute(Constants.REPERTOIRE, repertoire);
             req.getRequestDispatcher(Constants.HOME_JSP).forward(req, resp);
         } catch (ReadFileException e) {
-            e.printStackTrace();
-            //TODO
+            resp.sendRedirect(Constants.ERROR_JSP);
         }
 
     }

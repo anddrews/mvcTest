@@ -3,6 +3,7 @@ package by.gsu.epamlab.servlets;
 import by.gsu.epamlab.bll.DaoMethods;
 import by.gsu.epamlab.bll.ZalePlane;
 import by.gsu.epamlab.constants.Constants;
+import by.gsu.epamlab.exception.DAOException;
 import by.gsu.epamlab.exception.ReadFileException;
 import by.gsu.epamlab.fabrics.FabricDAOMethods;
 import by.gsu.epamlab.fabrics.FabricRepertoire;
@@ -47,8 +48,8 @@ public class About extends HttpServlet{
             }
 
             req.getRequestDispatcher(Constants.ABOUT_JSP).forward(req, resp);
-        } catch (  ReadFileException e) {
-            e.printStackTrace();
+        } catch (  ReadFileException | DAOException e) {
+            resp.sendRedirect(Constants.ERROR_JSP);
         }
     }
 

@@ -10,4 +10,9 @@
         <url-pattern>*.css</url-pattern>
         <url-pattern>*.js</url-pattern>
     </servlet-mapping>
+    <filter-mapping>
+        <filter-name>filterEmpty</filter-name>
+        <servlet-name>login</servlet-name>
+    </filter-mapping>
+
 </web-app>

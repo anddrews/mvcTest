@@ -53,7 +53,7 @@ public class Create extends AbstractServlet{
         }
         catch (DAOException e)
         {
-            req.getRequestDispatcher(Constants.ERROR_JSP).forward(req, resp);
+            resp.sendRedirect(Constants.ERROR_JSP);
         }
         finally {
             if(dao!=null)

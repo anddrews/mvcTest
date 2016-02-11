@@ -2,6 +2,7 @@ package by.gsu.epamlab.servlets;
 
 import by.gsu.epamlab.bll.DaoMethods;
 import by.gsu.epamlab.constants.Constants;
+import by.gsu.epamlab.exception.DAOException;
 import by.gsu.epamlab.fabrics.FabricDAOMethods;
 import by.gsu.epamlab.interfaces.IDaoMethods;
 import by.gsu.epamlab.model.Place;
@@ -44,7 +45,13 @@ public class Booking extends AbstractServlet{
 
         Map<Integer,Place[]> zale=(Map<Integer,Place[]>)req.getSession().getAttribute(Constants.ZALE);
         User user=(User)req.getSession().getAttribute(Constants.USER);
-        if(dao.bookPlace(row,place,price,id,date,user.getUserName()))req.setAttribute(Constants.ZALE,zale);
-        resp.sendRedirect(req.getHeader(Constants.GO_BACK));
+        try {
+            if(dao.bookPlace(row,place,price,id,date,user.getUserName()))req.setAttribute(Constants.ZALE,zale);
+            resp.sendRedirect(req.getHeader(Constants.GO_BACK));
+        } catch (DAOException e) {
+            resp.sendRedirect(Constants.ERROR_JSP
+            );
+        }
+
     }
 }

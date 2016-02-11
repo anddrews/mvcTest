@@ -24,8 +24,7 @@ import java.util.Date;
 public class DaoMethods implements IDaoMethods{
     public static final Object LOCK =new Object();
 
-    public  boolean addNewPlayToDB(Play play)
-    {
+    public  boolean addNewPlayToDB(Play play) throws DAOException {
         int id_play=0;
 
         try(Connection connection=ConnectionDb.getConnection();
@@ -49,16 +48,15 @@ public class DaoMethods implements IDaoMethods{
                 psDate.executeUpdate();
             }
 
-
+            return false;
         } catch (DAOException | SQLException e) {
-            e.printStackTrace();
+            throw new DAOException(e.getMessage());
         }
 
-        return false;
+
     }
 
-    public  boolean bookPlace(int row,int place, int price, int idPlay, long date, String user)
-    {
+    public  boolean bookPlace(int row,int place, int price, int idPlay, long date, String user) throws DAOException {
         boolean result=false;
         try(
                 Connection conn=ConnectionDb.getConnection();
@@ -70,41 +68,39 @@ public class DaoMethods implements IDaoMethods{
                 isBrone.setInt(Constants.TWO,place);
                 isBrone.setInt(Constants.THREE,idPlay);
                 isBrone.setTimestamp(Constants.FOR, new Timestamp(date));
+
+                brone.setInt(Constants.ONE, idPlay);
+                brone.setTimestamp(Constants.TWO, new Timestamp(date));
+                brone.setInt(Constants.THREE, row);
+                brone.setInt(Constants.FOR, place);
+                brone.setString(Constants.FIVE, user);
+                brone.setInt(Constants.SIX, price);
+                brone.setInt(Constants.SEVEN, Constants.ONE);
+
+                broneDel.setInt(Constants.ONE, idPlay);
+                broneDel.setTimestamp(Constants.TWO, new Timestamp(date));
+                broneDel.setString(Constants.THREE, user);
+                broneDel.setInt(Constants.FOR, row);
+                broneDel.setInt(Constants.FIVE, place);
+
                 synchronized (LOCK) {
                     ResultSet isBroneRes = isBrone.executeQuery();
                     if (!isBroneRes.next()) {
-                        brone.setInt(Constants.ONE, idPlay);
-                        brone.setTimestamp(Constants.TWO, new Timestamp(date));
-                        brone.setInt(Constants.THREE, row);
-                        brone.setInt(Constants.FOR, place);
-                        brone.setString(Constants.FIVE, user);
-                        brone.setInt(Constants.SIX, price);
-                        brone.setInt(Constants.SEVEN, Constants.ONE);
                         brone.executeUpdate();
                     } else {
                         if(user.equals(isBroneRes.getString(Constants.ONE))) {
-                            broneDel.setInt(Constants.ONE, idPlay);
-                            broneDel.setTimestamp(Constants.TWO, new Timestamp(date));
-                            broneDel.setString(Constants.THREE, user);
-                            broneDel.setInt(Constants.FOR, row);
-                            broneDel.setInt(Constants.FIVE, place);
                             broneDel.executeUpdate();
                         }
                     }
-                    result = true;
                 }
-
+                return true;
 
         } catch (SQLException | DAOException e) {
-            e.printStackTrace();
+           throw new DAOException(e.getMessage());
         }
-
-
-        return result;
     }
 
-    public  void fillZale(ZalePlane zale, int idPlay, long date, String user)
-    {
+    public  void fillZale(ZalePlane zale, int idPlay, long date, String user) throws DAOException {
         try(Connection conn=ConnectionDb.getConnection();
             PreparedStatement selectPlaces=conn.prepareStatement(SQLQueries.SELECT_BRONE_PLACE_ON_PLAY))
         {
@@ -128,12 +124,11 @@ public class DaoMethods implements IDaoMethods{
                 }
             }
         } catch (SQLException | DAOException e) {
-            e.printStackTrace();
+            throw new DAOException(e.getMessage());
         }
     }
 
-    public   List<ReportRow> getReport( Map<ReportCharacter, String> character)
-    {
+    public   List<ReportRow> getReport( Map<ReportCharacter, String> character) throws DAOException {
         List<ReportRow> result=null;
         AbstractQuery query= new SelectAllFromOrders();
         for(Map.Entry<ReportCharacter,String> entry:character.entrySet())
@@ -198,11 +193,12 @@ public class DaoMethods implements IDaoMethods{
                 int status=report.getInt(Constants.EIGHT);
                 result.add(new ReportRow(id,date,playName,user,row,place,price,status));
             }
+            return result;
 
         } catch (SQLException | DAOException e) {
-            e.printStackTrace();
+            throw new DAOException(e.getMessage());
         }
-        return result;
+
     }
 
     public  void saveRepertoire(InputStream input) throws DAOException {

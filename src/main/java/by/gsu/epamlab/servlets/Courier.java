@@ -55,9 +55,14 @@ public class Courier extends HttpServlet {
 
         }
 
-        List<ReportRow> report= dao.getReport(criteria);
-        req.setAttribute(Constants.REPORT,report);
-        req.getRequestDispatcher(Constants.COURIER_JSP).forward(req, resp);
+        try {
+            List<ReportRow> report = dao.getReport(criteria);
+            req.setAttribute(Constants.REPORT,report);
+            req.getRequestDispatcher(Constants.COURIER_JSP).forward(req, resp);
+        } catch (DAOException e) {
+            resp.sendRedirect(Constants.ERROR_JSP);
+        }
+
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
