@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(filterName = "isUser")
+@WebFilter(urlPatterns = {"/createPage/*","/loginPage/*"})
 public class IsUser implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

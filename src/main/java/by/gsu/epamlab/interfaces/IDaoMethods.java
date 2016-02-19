@@ -1,7 +1,7 @@
 package by.gsu.epamlab.interfaces;
 
 
-import by.gsu.epamlab.bll.ZalePlane;
+import by.gsu.epamlab.model.ZalePlane;
 import by.gsu.epamlab.constants.ReportCharacter;
 import by.gsu.epamlab.exception.DAOException;
 import by.gsu.epamlab.model.Play;

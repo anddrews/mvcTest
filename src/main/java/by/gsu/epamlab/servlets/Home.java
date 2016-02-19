@@ -1,6 +1,7 @@
 package by.gsu.epamlab.servlets;
 
 import by.gsu.epamlab.constants.Constants;
+import by.gsu.epamlab.exception.DAOException;
 import by.gsu.epamlab.exception.ReadFileException;
 import by.gsu.epamlab.fabrics.FabricRepertoire;
 import by.gsu.epamlab.interfaces.IRepertoire;
@@ -26,7 +27,7 @@ public class Home extends HttpServlet {
             List<Play> repertoire= repert.getRepertoire();
             req.setAttribute(Constants.REPERTOIRE, repertoire);
             req.getRequestDispatcher(Constants.HOME_JSP).forward(req, resp);
-        } catch (ReadFileException e) {
+        } catch (ReadFileException | DAOException e) {
             resp.sendRedirect(Constants.ERROR_JSP);
         }
 

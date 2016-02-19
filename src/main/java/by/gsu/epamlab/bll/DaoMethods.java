@@ -10,6 +10,7 @@ import by.gsu.epamlab.interfaces.IDaoMethods;
 import by.gsu.epamlab.model.Place;
 import by.gsu.epamlab.model.Play;
 import by.gsu.epamlab.model.ReportRow;
+import by.gsu.epamlab.model.ZalePlane;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,14 +23,14 @@ import java.util.*;
 import java.util.Date;
 
 public class DaoMethods implements IDaoMethods{
-    public static final Object LOCK =new Object();
+    public static final Object LOCK =DaoMethods.class;
 
     public  boolean addNewPlayToDB(Play play) throws DAOException {
         int id_play=0;
 
-        try(Connection connection=ConnectionDb.getConnection();
-            PreparedStatement ps=connection.prepareStatement(SQLQueries.ADD_NEW_PLAY, Statement.RETURN_GENERATED_KEYS);
-            PreparedStatement psDate=connection.prepareStatement(SQLQueries.ADD_NEW_DATE_TO_PLAY)) {
+        try(Connection conn=ConnectionDb.getConnection();
+            PreparedStatement ps=conn.prepareStatement(SQLQueries.ADD_NEW_PLAY, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement psDate=conn.prepareStatement(SQLQueries.ADD_NEW_DATE_TO_PLAY)) {
 
             ps.setString(Constants.ONE,play.getName());
             ps.setString(Constants.TWO,play.getDescription());
@@ -48,16 +49,16 @@ public class DaoMethods implements IDaoMethods{
                 psDate.executeUpdate();
             }
 
-            return false;
+            return true;
         } catch ( SQLException e) {
             throw new DAOException(e.getMessage());
         }
 
 
+
     }
 
     public  boolean bookPlace(int row,int place, int price, int idPlay, long date, String user) throws DAOException {
-        boolean result=false;
         try(
                 Connection conn=ConnectionDb.getConnection();
                 PreparedStatement isBrone=conn.prepareStatement(SQLQueries.SELECT_IS_BRONE);
@@ -112,7 +113,6 @@ public class DaoMethods implements IDaoMethods{
             selectPlaces.setInt(Constants.ONE,idPlay);
             selectPlaces.setTimestamp(Constants.TWO,new Timestamp(date));
             ResultSet res=selectPlaces.executeQuery();
-            Map<Integer,Place[]> zalePlane=zale.getPlane();
             while (res.next())
             {
                 int row=res.getInt(Constants.ONE);
@@ -121,11 +121,11 @@ public class DaoMethods implements IDaoMethods{
                 int status=res.getInt(Constants.FOR);
                 if(Constants.EMPTY_STRING.equals(user)||!userInp.equals(user))
                 {
-                    zalePlane.get(row)[place-Constants.ONE].setSold();
+                    zale.getPlane().get(row)[place-Constants.ONE].setSold();
                 }
                 else
                 {
-                    zalePlane.get(row)[place-Constants.ONE].setStatus(status);
+                    zale.getPlane().get(row)[place-Constants.ONE].setStatus(status);
                 }
             }
         } catch (SQLException  e) {
@@ -133,8 +133,7 @@ public class DaoMethods implements IDaoMethods{
         }
     }
 
-    public   List<ReportRow> getReport( Map<ReportCharacter, String> character) throws DAOException {
-        List<ReportRow> result=null;
+    public  List<ReportRow> getReport( Map<ReportCharacter, String> character) throws DAOException {
         AbstractQuery query= new SelectAllFromOrders();
         for(Map.Entry<ReportCharacter,String> entry:character.entrySet())
         {
@@ -185,7 +184,7 @@ public class DaoMethods implements IDaoMethods{
             }
 
             ResultSet report=select.executeQuery();
-            result=new ArrayList<>();
+            List<ReportRow> result=new ArrayList<>();
             while (report.next())
             {
                 int id=report.getInt(Constants.ONE);
@@ -226,7 +225,7 @@ public class DaoMethods implements IDaoMethods{
                         String hour = rows[Constants.ONE].trim();
 
 
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy HH:mm");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.FORMAT_DATE_FOR_REPERTOIRE);
                         dateFormat.setTimeZone(TimeZone.getDefault());
                         Date dateToSave = dateFormat.parse(date + " " + hour);
                         play.setNewDate(dateToSave);

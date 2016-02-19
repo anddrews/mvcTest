@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class ConnectionDb
 {
 
-    public static Connection getConnection() throws DAOException {
+    public static Connection getConnection()  throws DAOException {
 
         try {
             Context initContext = new InitialContext();

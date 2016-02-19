@@ -19,12 +19,11 @@ public class RepertoireDao implements IRepertoire{
     private static List<Play> plays;
 
 
-    public RepertoireDao() {
+    public RepertoireDao() throws DAOException {
             plays=reper();
     }
 
-    private List<Play> reper()
-    {
+    private List<Play> reper() throws DAOException {
         List<Play> plays=new ArrayList<>();
         try (Connection connection=ConnectionDb.getConnection();
              PreparedStatement psPlay=connection.prepareStatement(SQLQueries.SELECT_ALL_PLAY);
@@ -45,12 +44,13 @@ public class RepertoireDao implements IRepertoire{
                 }
                 plays.add(play);
             }
+            return plays;
         } catch (SQLException | DAOException  e) {
-            e.printStackTrace();
+            throw new DAOException(e.getMessage());
         }
 
 
-        return plays;
+
 
 
     }
@@ -65,7 +65,7 @@ public class RepertoireDao implements IRepertoire{
     public Play getPlay(int id) throws ReadFileException {
         Play result=new Play();
 
-        for(Play tmp:this.reper())
+        for(Play tmp:plays)
         {
             if(tmp.getId()==id)
             {

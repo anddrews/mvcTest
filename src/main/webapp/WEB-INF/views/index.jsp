@@ -23,6 +23,4 @@
         </c:forEach>
 
     </jsp:body>
-
-
 </t:layout>

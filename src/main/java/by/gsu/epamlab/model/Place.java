@@ -10,6 +10,11 @@ public class Place {
         this.price = price;
         this.status = 0;
     }
+    public Place(Place place)
+    {
+        this.price=place.getPrice();
+        this.status=place.getStatus();
+    }
 
     public int getPrice() {
         return price;

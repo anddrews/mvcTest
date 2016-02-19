@@ -1,0 +1,34 @@
+.zale{
+    display: inline-block;
+    position: relative;
+    left: 400px;
+}
+
+.row{
+    text-align: center;
+    margin: 0 auto;
+}
+
+.place{
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    border: solid 1.5px green;
+    border-radius: 6px;
+}
+
+.place:hover{
+    cursor: pointer;
+}
+
+.red{
+    background-color: red;
+}
+
+.booked{
+    background-color: green;
+}
+
+.free{
+    background-color: inherit;
+}

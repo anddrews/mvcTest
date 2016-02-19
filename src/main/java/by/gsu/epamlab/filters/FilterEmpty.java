@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.Map;
 
 
-@WebFilter (filterName = "filterEmpty")
+@WebFilter (urlPatterns ={"/loginPage/login","/createPage/create"})
 public class FilterEmpty implements Filter{
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

@@ -6,6 +6,7 @@ import by.gsu.epamlab.interfaces.IUserDao;
 import by.gsu.epamlab.exception.DAOException;
 import by.gsu.epamlab.model.User;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,9 +39,15 @@ public class Login extends AbstractServlet{
             }
             else
             {
-
+                //resp.setHeader("referer","C:/");
+//                resp.sendRedirect(req.getParameter(Constants.PAGE));
                 req.setAttribute(Constants.ERROR,Constants.BAD_PARAMETER);
-                doGet(req, resp);
+                //getServletContext().getRequestDispatcher(Constants.LOGIN_JSP).forward(req, resp);
+                req.getRequestDispatcher(Constants.LOGIN_JSP).forward(req,resp);
+                //doGet(req, resp);
+                //resp.sendRedirect(req.getParameter(Constants.PAGE));
+//                System.out.println("path:"+req.getParameter(forwardPath).replace("/login",""));
+//                resp.sendRedirect(req.getParameter(forwardPath).replace("/login",""));
             }
         }
         catch (DAOException e)

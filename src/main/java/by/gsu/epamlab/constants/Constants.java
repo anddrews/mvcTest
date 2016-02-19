@@ -54,7 +54,7 @@ public class Constants {
     public final static String FORMAT_DATE_FOR_REPORTS ="dd-mm-yyyy";
     public final static String ACTION ="action";
     public final static String BUY ="buy";
-    public final static String DEL ="del";
+    public final static String FORMAT_DATE_FOR_REPERTOIRE ="dd.mm.yyyy HH:mm";
 
 
 
