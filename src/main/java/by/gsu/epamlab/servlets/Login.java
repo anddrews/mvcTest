@@ -31,23 +31,17 @@ public class Login extends AbstractServlet{
         try{
             dao=FabricDAO.getDAO();
             User user;
-            if(!login.equals(Constants.EMPTY_STRING) && !password.equals(Constants.EMPTY_STRING)
-                    && ((user=dao.getUser(login,password))!=null))
+            if((user=dao.getUser(login,password))!=null)
             {
                 req.getSession().setAttribute(Constants.USER, user);
                 resp.sendRedirect(req.getParameter(Constants.PAGE));
             }
             else
             {
-                //resp.setHeader("referer","C:/");
-//                resp.sendRedirect(req.getParameter(Constants.PAGE));
-                req.setAttribute(Constants.ERROR,Constants.BAD_PARAMETER);
-                //getServletContext().getRequestDispatcher(Constants.LOGIN_JSP).forward(req, resp);
-                req.getRequestDispatcher(Constants.LOGIN_JSP).forward(req,resp);
-                //doGet(req, resp);
-                //resp.sendRedirect(req.getParameter(Constants.PAGE));
-//                System.out.println("path:"+req.getParameter(forwardPath).replace("/login",""));
-//                resp.sendRedirect(req.getParameter(forwardPath).replace("/login",""));
+                String s=req.getContextPath()+Constants.LOGIN_PAGE + "?err=Bad%20parameters";
+                System.out.println(s);
+                //resp.sendRedirect( s);
+                resp.sendRedirect( s);
             }
         }
         catch (DAOException e)

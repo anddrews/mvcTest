@@ -6,6 +6,9 @@
 
 
   <display-name>mvcTest</display-name>
+    <welcome-file-list>
+        <welcome-file>home</welcome-file>
+    </welcome-file-list>
 
     <servlet-mapping>
         <servlet-name>default</servlet-name>

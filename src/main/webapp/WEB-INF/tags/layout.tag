@@ -60,6 +60,5 @@
     <p> Developed by Kondratenko e-mail:anddrews@tut.by</p>
 </footer>
 
-
 </body>
 </html>

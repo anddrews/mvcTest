@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/")
+@WebServlet("/home")
 public class Home extends HttpServlet {
 
 
@@ -27,6 +27,7 @@ public class Home extends HttpServlet {
             List<Play> repertoire= repert.getRepertoire();
             req.setAttribute(Constants.REPERTOIRE, repertoire);
             req.getRequestDispatcher(Constants.HOME_JSP).forward(req, resp);
+
         } catch (ReadFileException | DAOException e) {
             resp.sendRedirect(Constants.ERROR_JSP);
         }

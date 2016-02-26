@@ -5,8 +5,8 @@
     <title></title>
 </head>
 <body>
-<p>${error}</p>
-<form name="loginForm" action="loginPage/login" method="post">
+<p>${param.get("err")}</p>
+<form name="loginForm" action="${pageContext.request.contextPath}/loginPage/login" method="post">
   <p>User</p>
   <input name="<%=Constants.USER%>" type="text">
   <p>Password</p>
@@ -15,6 +15,5 @@
   <input name="action" type="hidden" value="login">
   <input type="submit">
 </form>
-
 </body>
 </html>
